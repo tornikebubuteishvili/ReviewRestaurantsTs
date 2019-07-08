@@ -1,6 +1,7 @@
 import React, { useState, CSSProperties } from "react";
 import BackgroundImage from "../../shared/BackgroundImage";
 import { Link } from "react-router-dom";
+import LoginForms from "./LoginForms";
 
 interface State {
   usernameInputValue: string;
@@ -52,6 +53,7 @@ export default function LoginScreen() {
         >
           Submit
         </button>
+        <LoginForms message={"Log in"} />
         <Link to={"/adminusers"}>adminusers</Link>
         <Link to={"/adminrestaurants"}>adminrestaurants</Link>
         <Link to={"/ownerfeed"}>ownerfeed</Link>
