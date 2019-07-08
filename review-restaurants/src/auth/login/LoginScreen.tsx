@@ -1,15 +1,13 @@
 import React, { useState, CSSProperties } from "react";
-import BackgroundImage from "../shared/BackgroundImage";
+import BackgroundImage from "../../shared/BackgroundImage";
 import { Link } from "react-router-dom";
-
-interface Props {}
 
 interface State {
   usernameInputValue: string;
   text: string;
 }
 
-export default function SignupScreen(props: Props) {
+export default function LoginScreen() {
   const [state, setState] = useState<State>({
     usernameInputValue: "",
     text: ""
@@ -40,7 +38,7 @@ export default function SignupScreen(props: Props) {
         }}
       >
         <label style={{}}>
-          P:{state.text}
+          Name:{state.text}
           <input
             value={state.usernameInputValue}
             onChange={onUsernameInputChange}
@@ -54,7 +52,11 @@ export default function SignupScreen(props: Props) {
         >
           Submit
         </button>
-        <Link to={"/"}>login</Link>
+        <Link to={"/adminusers"}>adminusers</Link>
+        <Link to={"/adminrestaurants"}>adminrestaurants</Link>
+        <Link to={"/ownerfeed"}>ownerfeed</Link>
+        <Link to={"/userfeed"}>userfeed</Link>
+        <Link to={"/signup"}>signup</Link>
       </div>
     </div>
   );
