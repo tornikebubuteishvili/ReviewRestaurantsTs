@@ -9,7 +9,7 @@ interface State {
   text: string;
 }
 
-export default function LoginScreen(props: Props) {
+export default function SignupScreen(props: Props) {
   const [state, setState] = useState<State>({
     usernameInputValue: "",
     text: ""
@@ -40,7 +40,7 @@ export default function LoginScreen(props: Props) {
         }}
       >
         <label style={{}}>
-          Name:{state.text}
+          P:{state.text}
           <input
             value={state.usernameInputValue}
             onChange={onUsernameInputChange}
@@ -54,7 +54,7 @@ export default function LoginScreen(props: Props) {
         >
           Submit
         </button>
-        <Link to={"/signup"}>signup</Link>
+        <Link to={"/"}>login</Link>
       </div>
     </div>
   );
