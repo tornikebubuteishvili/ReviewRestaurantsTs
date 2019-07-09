@@ -13,8 +13,8 @@ const App: React.FC = () => {
       <div
         style={{
           display: "flex",
-          width: window.innerWidth,
-          height: window.innerHeight
+          width: "100%",
+          height: "100%"
         }}
       >
         <Route exact path="/" component={LoginScreen} />

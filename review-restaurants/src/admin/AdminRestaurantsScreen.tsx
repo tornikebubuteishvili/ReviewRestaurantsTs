@@ -1,5 +1,4 @@
 import React, { useState, CSSProperties } from "react";
-import BackgroundImage from "../shared/BackgroundImage";
 import { Link } from "react-router-dom";
 
 export default function AdminRestaurantsScreen() {
@@ -13,7 +12,6 @@ export default function AdminRestaurantsScreen() {
         alignContent: "center"
       }}
     >
-      <BackgroundImage />
       <div
         style={{
           alignSelf: "center",

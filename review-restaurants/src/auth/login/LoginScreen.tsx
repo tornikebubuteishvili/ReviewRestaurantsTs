@@ -1,5 +1,4 @@
 import React, { useState, CSSProperties } from "react";
-import BackgroundImage from "../../shared/BackgroundImage";
 import { Link } from "react-router-dom";
 import LoginForms from "./LoginForms";
 
@@ -29,7 +28,6 @@ export default function LoginScreen() {
         alignContent: "center"
       }}
     >
-      <BackgroundImage />
       <div
         style={{
           alignSelf: "center",

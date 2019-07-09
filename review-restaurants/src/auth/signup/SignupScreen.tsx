@@ -1,5 +1,4 @@
 import React, { useState, CSSProperties } from "react";
-import BackgroundImage from "../../shared/BackgroundImage";
 import { Link } from "react-router-dom";
 
 interface State {
@@ -28,7 +27,6 @@ export default function SignupScreen() {
         alignContent: "center"
       }}
     >
-      <BackgroundImage />
       <div
         style={{
           alignSelf: "center",

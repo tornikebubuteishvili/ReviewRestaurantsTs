@@ -1,5 +1,4 @@
 import React, { useState, CSSProperties } from "react";
-import BackgroundImage from "../shared/BackgroundImage";
 import { Link } from "react-router-dom";
 
 export default function AdminUsersScreen() {
@@ -13,7 +12,6 @@ export default function AdminUsersScreen() {
         alignContent: "center"
       }}
     >
-      <BackgroundImage />
       <div
         style={{
           alignSelf: "center",
