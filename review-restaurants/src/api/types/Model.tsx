@@ -7,10 +7,10 @@ export interface LoginFormValues {
 }
 
 export interface RegisterFormValues {
-  readonly email: string;
   readonly username: string;
   readonly password: string;
   readonly repeatPassword: string;
+  readonly role: Role;
 }
 
 /* Shared */
@@ -63,5 +63,5 @@ export interface SortItem {
 }
 
 export interface SortModel {
-  readonly sortItems: [];
+  readonly sortItems: SortItem[];
 }
