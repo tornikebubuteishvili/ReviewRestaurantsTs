@@ -15,6 +15,11 @@ export interface RegisterRequest {
   readonly role: Role;
 }
 
+export interface RefreshTokenRequest {
+  readonly olderToken: string;
+  readonly refreshToken: string;
+}
+
 /* Fetch requests */
 export interface FetchListRequest {
   readonly pageSize: number;
@@ -31,7 +36,7 @@ export interface FetchReviewRequest {
   readonly uId: string;
 }
 
-export interface FerchUserRequest {
+export interface FetchUserRequest {
   readonly uId: string;
 }
 

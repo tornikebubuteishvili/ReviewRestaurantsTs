@@ -16,13 +16,13 @@ export interface FetchRestaurantsResponse {
   readonly itemsCount: number;
 }
 
-export interface FetchRestaurantsResponse {
-  readonly items: RestaurantLite[];
+export interface FetchReviewsResponse {
+  readonly items: Review[];
   readonly itemsCount: number;
 }
 
-export interface FetchRestaurantsResponse {
-  readonly items: RestaurantLite[];
+export interface FetchAccountsResponse {
+  readonly items: User[];
   readonly itemsCount: number;
 }
 
@@ -30,7 +30,7 @@ export type FetchRestaurantResponse = Restaurant;
 
 export type FetchReviewResponse = Review;
 
-export type FerchUserResponse = User;
+export type FetchUserResponse = User;
 
 /* Add Responses */
 export interface AddRestaurantResponse {}
