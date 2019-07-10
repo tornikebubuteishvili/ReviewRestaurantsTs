@@ -10,6 +10,10 @@ export interface LogoutResponse {}
 
 export interface RegisterResponse {}
 
+export interface RefreshTokenResponse {
+  readonly token: string;
+}
+
 /* Fetch Responses */
 export interface FetchRestaurantsResponse {
   readonly items: RestaurantLite[];
