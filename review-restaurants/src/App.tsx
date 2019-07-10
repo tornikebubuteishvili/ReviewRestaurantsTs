@@ -1,11 +1,11 @@
 import React from "react";
-import LoginScreen from "./auth/login/LoginScreen";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import SignupScreen from "./auth/signup/SignupScreen";
-import UserFeedScreen from "./user/UserFeedScreen";
-import OwnerFeedScreen from "./owner/OwnerFeedScreen";
-import AdminRestaurantsScreen from "./admin/AdminRestaurantsScreen";
-import AdminUsersScreen from "./admin/AdminUsersScreen";
+import LoginScreen from "./components/auth/login/LoginScreen";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import SignupScreen from "./components/auth/signup/SignupScreen";
+import UserFeedScreen from "./components/user/UserFeedScreen";
+import OwnerFeedScreen from "./components/owner/OwnerFeedScreen";
+import AdminRestaurantsScreen from "./components/admin/AdminRestaurantsScreen";
+import AdminUsersScreen from "./components/admin/AdminUsersScreen";
 
 const App: React.FC = () => {
   return (

@@ -1,10 +1,11 @@
 import React from "react";
 import * as Yup from "yup";
 import { withFormik, FormikProps, FormikErrors, Form, Field } from "formik";
-import { InputGroup, Tooltip, Button } from "@blueprintjs/core";
+import { InputGroup, Tooltip, Button, Intent } from "@blueprintjs/core";
 
 interface FormValues {
   email: string;
+  username: string;
   password: string;
 }
 
@@ -18,31 +19,45 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
     <Form>
       <h1>{message}</h1>
       <InputGroup
-        leftIcon="user"
-        // onChange={this.handleFilterChange}
+        placeholder="Email"
+        leftIcon="envelope"
+        large={true}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          props.setFieldValue("email", e.target.value);
+        }}
+        value={props.values.email}
+      />
+      {touched.email && errors.email && <div>{errors.email}</div>}
+      <InputGroup
         placeholder="Username"
-        // value={filterValue}
+        leftIcon="user"
+        large={true}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          props.setFieldValue("username", e.target.value);
+        }}
+        value={props.values.username}
       />
       <InputGroup
-        placeholder="Enter your password..."
+        placeholder="Password"
+        leftIcon="lock"
+        large={true}
         rightElement={
           <Tooltip content={"Show Password"}>
             <Button
-              icon={"lock"}
-              //   intent={Intent.WARNING}
+              icon={"eye-on"}
+              intent={Intent.WARNING}
               minimal={true}
-              //   onClick={this.handleLockClick}
+              // onClick={this.handleLockClick}
             />
           </Tooltip>
         }
         // type={showPassword ? "text" : "password"}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          props.setFieldValue("password", e.target.value);
+        }}
+        value={props.values.password}
       />
-      <Field type="email" name="email" />
-      {touched.email && errors.email && <div>{errors.email}</div>}
-
-      <Field type="password" name="password" />
       {touched.password && errors.password && <div>{errors.password}</div>}
-
       <button type="submit" disabled={isSubmitting}>
         Submit
       </button>
@@ -51,18 +66,10 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
 };
 
 interface LoginFormProps {
-  initialEmail?: string;
   message: string;
 }
 
 const LoginForms = withFormik<LoginFormProps, FormValues>({
-  mapPropsToValues: props => {
-    return {
-      email: props.initialEmail || "",
-      password: ""
-    };
-  },
-
   validate: (values: FormValues) => {
     let errors: FormikErrors<FormValues> = {};
     if (!values.email) {
