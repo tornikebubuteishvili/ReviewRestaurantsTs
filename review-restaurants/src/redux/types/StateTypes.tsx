@@ -64,6 +64,7 @@ export type RestaurantDetailsState = {
   readonly restaurant: Restaurant;
   readonly reviews: { [id: string]: Review };
   readonly reviewIds: string[];
+  readonly hasMoreReviews: boolean;
   readonly answer: string;
 
   readonly isFetchingRestaurant: boolean;

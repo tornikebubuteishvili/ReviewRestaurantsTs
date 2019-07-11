@@ -3,7 +3,6 @@ import { RestaurantAction, ReviewAction } from "../types/ActionTypes";
 import * as RestaurantActions from "../actions/RestaurantActions";
 import * as ReviewActions from "../actions/ReviewActions";
 import { getType } from "typesafe-actions";
-import { RestaurantLite, Review } from "../../api/types/Model";
 
 export default function PostReducer(
   state: RestaurantDetailsState = {
@@ -16,6 +15,7 @@ export default function PostReducer(
     },
     reviews: {},
     reviewIds: [],
+    hasMoreReviews: false,
     answer: "",
 
     isFetchingRestaurant: false,
