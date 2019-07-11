@@ -45,7 +45,7 @@ export const updateUser = createAsyncAction(
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILURE
-)<UpdateUserRequest, UpdateUserResponse, any>();
+)<UpdateUserRequest, UpdateUserRequest, any>();
 
 export const REFRESH_TOKEN_REQUEST = "Account/REFRESH_TOKEN_REQUEST";
 export const REFRESH_TOKEN_SUCCESS = "Account/REFRESH_TOKEN_SUCCESS";
@@ -72,7 +72,7 @@ export const deleteUser = createAsyncAction(
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILURE
-)<DeleteUserRequest, DeleteUserResponse, any>();
+)<DeleteUserRequest, DeleteUserRequest, any>();
 
 export const FETCH_ACCOUNTS_REQUEST = "Account/FETCH_ACCOUNTS_REQUEST";
 export const FETCH_ACCOUNTS_SUCCESS = "Account/FETCH_ACCOUNTS_SUCCESS";

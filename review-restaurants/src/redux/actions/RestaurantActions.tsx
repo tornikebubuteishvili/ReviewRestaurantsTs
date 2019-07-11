@@ -30,7 +30,7 @@ export const updateRestaurant = createAsyncAction(
   UPDATE_RESTAURANT_REQUEST,
   UPDATE_RESTAURANT_SUCCESS,
   UPDATE_RESTAURANT_FAILURE
-)<UpdateRestaurantRequest, UpdateRestaurantResponse, any>();
+)<UpdateRestaurantRequest, UpdateRestaurantRequest, any>();
 
 export const DELETE_RESTAURANT_REQUEST = "Restaurant/DELETE_RESTAURANT_REQUEST";
 export const DELETE_RESTAURANT_SUCCESS = "Restaurant/DELETE_RESTAURANT_SUCCESS";
@@ -39,7 +39,7 @@ export const deleteRestaurant = createAsyncAction(
   DELETE_RESTAURANT_REQUEST,
   DELETE_RESTAURANT_SUCCESS,
   DELETE_RESTAURANT_FAILURE
-)<DeleteRestaurantRequest, DeleteRestaurantResponse, any>();
+)<DeleteRestaurantRequest, DeleteRestaurantRequest, any>();
 
 export const FETCH_RESTAURANTS_REQUEST = "Restaurant/FETCH_RESTAURANTS_REQUEST";
 export const FETCH_RESTAURANTS_SUCCESS = "Restaurant/FETCH_RESTAURANTS_SUCCESS";

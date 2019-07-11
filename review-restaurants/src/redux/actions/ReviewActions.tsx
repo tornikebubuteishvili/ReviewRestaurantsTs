@@ -4,14 +4,16 @@ import {
   UpdateReviewRequest,
   DeleteReviewRequest,
   FetchListRequest,
-  FetchReviewRequest
+  FetchReviewRequest,
+  AddReviewAnswerRequest
 } from "../../api/types/Request";
 import {
   AddReviewResponse,
   UpdateReviewResponse,
   DeleteReviewResponse,
   FetchReviewsResponse,
-  FetchReviewResponse
+  FetchReviewResponse,
+  AddReviewAnswerResponse
 } from "../../api/types/Response";
 
 export const CLEAR_REVIEWS = "Comment/CLEAR_REVIEWS";
@@ -26,7 +28,16 @@ export const addReview = createAsyncAction(
   ADD_REVIEW_REQUEST,
   ADD_REVIEW_SUCCESS,
   ADD_REVIEW_FAILURE
-)<AddReviewRequest, AddReviewResponse, any>();
+)<AddReviewRequest, AddReviewRequest, any>();
+
+export const ADD_REVIEW_ANSWER_REQUEST = "Review/ADD_REVIEW_ANSWER_REQUEST";
+export const ADD_REVIEW_ANSWER_SUCCESS = "Review/ADD_REVIEW_ANSWER_SUCCESS";
+export const ADD_REVIEW_ANSWER_FAILURE = "Review/ADD_REVIEW_ANSWER_FAILURE";
+export const addReviewAnswer = createAsyncAction(
+  ADD_REVIEW_ANSWER_REQUEST,
+  ADD_REVIEW_ANSWER_SUCCESS,
+  ADD_REVIEW_ANSWER_FAILURE
+)<AddReviewAnswerRequest, AddReviewAnswerResponse, any>();
 
 export const UPDATE_REVIEW_REQUEST = "Review/UPDATE_REVIEW_REQUEST";
 export const UPDATE_REVIEW_SUCCESS = "Review/UPDATE_REVIEW_SUCCESS";

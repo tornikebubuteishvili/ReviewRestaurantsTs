@@ -3,6 +3,7 @@ import { RestaurantLite, Restaurant, Review, User } from "./Model";
 /* Account requests */
 export interface LoginResponse {
   readonly uId: string;
+  readonly username: string;
   readonly token: string;
 }
 
@@ -37,18 +38,30 @@ export type FetchReviewResponse = Review;
 export type FetchUserResponse = User;
 
 /* Add Responses */
-export interface AddRestaurantResponse {}
+export interface AddRestaurantResponse {
+  readonly uId: string;
+}
 
-export interface AddReviewResponse {}
+export interface AddReviewResponse {
+  readonly uId: string;
+}
 
-export interface AddReviewAnswerResponse {}
+export interface AddReviewAnswerResponse {
+  readonly uId: string;
+}
 
 /* Update Responses */
-export interface UpdateRestaurantResponse {}
+export interface UpdateRestaurantResponse {
+  readonly uId: string;
+}
 
-export interface UpdateReviewResponse {}
+export interface UpdateReviewResponse {
+  readonly uId: string;
+}
 
-export interface UpdateUserResponse {}
+export interface UpdateUserResponse {
+  readonly uId: string;
+}
 
 /* Delete Responses */
 export interface DeleteRestaurantResponse {}
