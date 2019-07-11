@@ -1,4 +1,9 @@
-import { Restaurant, Review } from "../../api/types/Model";
+import {
+  Restaurant,
+  Review,
+  User,
+  RestaurantLite
+} from "../../api/types/Model";
 import { Role } from "../../api/types/Enum";
 
 export type AccountState = {
@@ -13,70 +18,63 @@ export type AccountState = {
   readonly isRegistering: boolean;
 };
 
-export type UserFeedState = {
-  readonly restaurants: { [id: string]: Restaurant };
+export type UserState = {
+  readonly restaurants: { [id: string]: RestaurantLite };
   readonly restaurantIds: string[];
   readonly hasMoreRestaurants: boolean;
 
   readonly isFetchingRestaurants: boolean;
 };
 
-export type OwnerFeedState = {
-  readonly restaurants: { [id: string]: Restaurant };
+export type OwnerState = {
+  readonly restaurants: { [id: string]: RestaurantLite };
   readonly restaurantIds: string[];
   readonly hasMoreRestaurants: boolean;
   readonly pendingReviews: { [id: string]: Review };
   readonly pendingReviewIds: string[];
   readonly hasMorePendingReviews: boolean;
+  readonly newRestaurantName: string;
+  readonly answer: string;
 
   readonly isFetchingRestaurants: boolean;
   readonly isFetchingPendingReviews: boolean;
+  readonly isAddingRestaurant: boolean;
+  readonly isAddingAnswer: boolean;
 };
 
-export type AdminFeedState = {
-  readonly restaurants: { [id: string]: Restaurant };
+export type AdminState = {
+  readonly restaurants: { [id: string]: RestaurantLite };
   readonly restaurantIds: string[];
   readonly hasMoreRestaurants: boolean;
-  readonly users: { [id: string]: Review };
+  readonly users: { [id: string]: User };
   readonly userIds: string[];
-  readonly hasMoreusers: boolean;
+  readonly hasMoreUsers: boolean;
 
   readonly isFetchingRestaurants: boolean;
   readonly isFetchingUsers: boolean;
+  readonly isUpdatingUser: boolean;
+  readonly isUpdatingRestaurant: boolean;
+  readonly isUpdatingReview: boolean;
+  readonly isDeletingUser: boolean;
+  readonly isDeletingRestaurant: boolean;
+  readonly isDeletingReview: boolean;
 };
 
 export type RestaurantDetailsState = {
   readonly restaurant: Restaurant;
   readonly reviews: { [id: string]: Review };
   readonly reviewIds: string[];
-};
+  readonly answer: string;
 
-export type AddReviewState = {
-  readonly comment: string;
-  readonly rating: number;
-
+  readonly isFetchingRestaurant: boolean;
   readonly isAddingReview: boolean;
-};
-
-export type AddRestaurantState = {
-  readonly name: string;
-
-  readonly isAddingRestaurant: boolean;
-};
-
-export type AnswerReviewState = {
-  readonly comment: string;
-
   readonly isAddingAnswer: boolean;
 };
 
 export type AppState = {
   readonly account: AccountState;
-  readonly userFeed: UserFeedState;
-  readonly ownerFeed: OwnerFeedState;
-  readonly adminFeed: AdminFeedState;
+  readonly user: UserState;
+  readonly owner: OwnerState;
+  readonly admin: AdminState;
   readonly restaurantDetails: RestaurantDetailsState;
-  readonly addReview: AddReviewState;
-  readonly addRestaurant: AddRestaurantState;
-  readonly answerReview: AnswerReviewState;
 };
