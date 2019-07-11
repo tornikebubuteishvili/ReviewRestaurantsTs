@@ -1,4 +1,4 @@
-import { ajax } from "rxjs/ajax";
+import { ajax, AjaxResponse } from "rxjs/ajax";
 import { serverAddress } from "../const";
 import { GetToken } from "../functions/StoreFunctions";
 import {
@@ -9,38 +9,64 @@ import {
   FetchReviewRequest,
   AddReviewAnswerRequest
 } from "./types/Request";
-import { FetchReviewResponse, FetchReviewsResponse } from "./types/Response";
+import {
+  FetchReviewResponse,
+  FetchReviewsResponse,
+  AddReviewResponse,
+  AddReviewAnswerResponse,
+  UpdateReviewResponse,
+  DeleteReviewResponse
+} from "./types/Response";
+import { map } from "rxjs/operators";
 
 const address = serverAddress + "Restaurant";
 
 export function AddReview(request: AddReviewRequest) {
-  return ajax.post(address + "/CreateReview", JSON.stringify(request), {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    authorization: "Bearer " + GetToken()
-  });
+  return ajax
+    .post(address + "/CreateReview", JSON.stringify(request), {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: "Bearer " + GetToken()
+    })
+    .pipe(
+      map((response: AjaxResponse) => response.response as AddReviewResponse)
+    );
 }
 
 export function AddReviewAnswer(request: AddReviewAnswerRequest) {
-  return ajax.put(address + "/AnswerReview", JSON.stringify(request), {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    authorization: "Bearer " + GetToken()
-  });
+  return ajax
+    .put(address + "/AnswerReview", JSON.stringify(request), {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: "Bearer " + GetToken()
+    })
+    .pipe(
+      map(
+        (response: AjaxResponse) => response.response as AddReviewAnswerResponse
+      )
+    );
 }
 
 export function UpdateReview(request: UpdateReviewRequest) {
-  return ajax.put(address + "/EditReview", JSON.stringify(request), {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    authorization: "Bearer " + GetToken()
-  });
+  return ajax
+    .put(address + "/EditReview", JSON.stringify(request), {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: "Bearer " + GetToken()
+    })
+    .pipe(
+      map((response: AjaxResponse) => response.response as UpdateReviewResponse)
+    );
 }
 
 export function DeleteReview(request: DeleteReviewRequest) {
-  return ajax.delete(address + "/DeleteReview?" + "uId=" + request.uId, {
-    authorization: "Bearer " + GetToken()
-  });
+  return ajax
+    .delete(address + "/DeleteReview?" + "uId=" + request.uId, {
+      authorization: "Bearer " + GetToken()
+    })
+    .pipe(
+      map((response: AjaxResponse) => response.response as DeleteReviewResponse)
+    );
 }
 
 export function FetchReviews(request: FetchListRequest) {

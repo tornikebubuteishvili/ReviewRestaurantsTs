@@ -14,17 +14,26 @@ import {
 import {
   LoginResponse,
   FetchAccountsResponse,
-  FetchUserResponse
+  FetchUserResponse,
+  RegisterResponse,
+  UpdateUserResponse,
+  RefreshTokenResponse,
+  LogoutResponse,
+  DeleteUserResponse
 } from "./types/Response";
 import { GetToken } from "../functions/StoreFunctions";
 
 const address = serverAddress + "Account";
 
 export function RegisterUser(request: RegisterRequest) {
-  return ajax.post(address + "/CreateAccount", JSON.stringify(request), {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  });
+  return ajax
+    .post(address + "/CreateAccount", JSON.stringify(request), {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    })
+    .pipe(
+      map((response: AjaxResponse) => response.response as RegisterResponse)
+    );
 }
 
 export function LoginUser(request: LoginRequest) {
@@ -37,39 +46,53 @@ export function LoginUser(request: LoginRequest) {
 }
 
 export function UpdateUser(request: UpdateUserRequest) {
-  return ajax.put(address + "/EditAccount", JSON.stringify(request), {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    authorization: "Bearer " + GetToken()
-  });
+  return ajax
+    .put(address + "/EditAccount", JSON.stringify(request), {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: "Bearer " + GetToken()
+    })
+    .pipe(
+      map((response: AjaxResponse) => response.response as UpdateUserResponse)
+    );
 }
 
 export function RefreshToken(request: RefreshTokenRequest) {
-  return ajax.put(address + "/RefreshToken", JSON.stringify(request), {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    authorization: "Bearer " + GetToken()
-  });
+  return ajax
+    .put(address + "/RefreshToken", JSON.stringify(request), {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: "Bearer " + GetToken()
+    })
+    .pipe(
+      map((response: AjaxResponse) => response.response as RefreshTokenResponse)
+    );
 }
 
 export function LogoutUser(request: LogoutRequest) {
-  return ajax.put(address + "/LogOut", JSON.stringify(request), {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    authorization: "Bearer " + GetToken()
-  });
+  return ajax
+    .put(address + "/LogOut", JSON.stringify(request), {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: "Bearer " + GetToken()
+    })
+    .pipe(map((response: AjaxResponse) => response.response as LogoutResponse));
 }
 
 export function DeleteUser(request: DeleteUserRequest) {
-  return ajax.delete(
-    address +
-      "/DeleteAccount?" +
-      "uId=" +
-      request.uId +
-      {
-        authorization: "Bearer " + GetToken()
-      }
-  );
+  return ajax
+    .delete(
+      address +
+        "/DeleteAccount?" +
+        "uId=" +
+        request.uId +
+        {
+          authorization: "Bearer " + GetToken()
+        }
+    )
+    .pipe(
+      map((response: AjaxResponse) => response.response as DeleteUserResponse)
+    );
 }
 
 export function FetchAccounts(request: FetchListRequest) {
