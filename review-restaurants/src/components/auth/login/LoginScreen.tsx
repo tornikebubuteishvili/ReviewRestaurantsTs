@@ -8,11 +8,6 @@ interface State {}
 export default function LoginScreen(props: RouteComponentProps) {
   const [state, setState] = useState<State>({});
 
-  function onUsernameInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    e.target.value.length <= 10 &&
-      setState({ ...state, usernameInputValue: e.target.value });
-  }
-
   return (
     <div
       style={{

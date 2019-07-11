@@ -1,21 +1,12 @@
 import React, { useState, CSSProperties } from "react";
-import { Link } from "react-router-dom";
+import { Card, Elevation, Button } from "@blueprintjs/core";
+import { RouteComponentProps } from "react-router-dom";
+import RegisterForms from "./RegisterForms";
 
-interface State {
-  usernameInputValue: string;
-  text: string;
-}
+interface State {}
 
-export default function SignupScreen() {
-  const [state, setState] = useState<State>({
-    usernameInputValue: "",
-    text: ""
-  });
-
-  function onUsernameInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    e.target.value.length <= 10 &&
-      setState({ ...state, usernameInputValue: e.target.value });
-  }
+export default function SignupScreen(props: RouteComponentProps) {
+  const [state, setState] = useState<State>({});
 
   return (
     <div
@@ -27,31 +18,19 @@ export default function SignupScreen() {
         alignContent: "center"
       }}
     >
-      <div
+      <Card
+        elevation={Elevation.FOUR}
         style={{
           alignSelf: "center",
-          width: "70%",
-          height: "70%",
-          backgroundColor: "red"
+          justifyContent: "center",
+          alignContent: "center",
+          width: "50%",
+          height: "70%"
         }}
       >
-        <label style={{}}>
-          P:{state.text}
-          <input
-            value={state.usernameInputValue}
-            onChange={onUsernameInputChange}
-          />
-        </label>
-        <button
-          style={styles.buttonStyle}
-          onClick={() => {
-            setState({ ...state, text: state.usernameInputValue });
-          }}
-        >
-          Submit
-        </button>
-        <Link to={"/"}>login</Link>
-      </div>
+        <RegisterForms message={"Sign up"} />
+        <Button onClick={() => props.history.push("/")}>Log in</Button>
+      </Card>
     </div>
   );
 }
