@@ -1,6 +1,6 @@
 import React, { useState, CSSProperties } from "react";
 import { Card, Elevation, Button } from "@blueprintjs/core";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 import RegisterForms from "./RegisterForms";
 
 interface State {}
@@ -23,13 +23,16 @@ export default function SignupScreen(props: RouteComponentProps) {
         style={{
           alignSelf: "center",
           justifyContent: "center",
-          alignContent: "center",
           width: "50%",
-          height: "70%"
+          height: "70%",
+          display: "flex",
+          flexDirection: "column"
         }}
       >
-        <RegisterForms message={"Sign up"} />
-        <Button onClick={() => props.history.push("/")}>Log in</Button>
+        <RegisterForms />
+        <h3 style={{ textAlign: "center", marginTop: "auto" }}>
+          Already have an account? <Link to={"/"}>Log in</Link>
+        </h3>
       </Card>
     </div>
   );

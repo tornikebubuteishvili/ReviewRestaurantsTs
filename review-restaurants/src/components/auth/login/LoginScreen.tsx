@@ -23,13 +23,16 @@ export default function LoginScreen(props: RouteComponentProps) {
         style={{
           alignSelf: "center",
           justifyContent: "center",
-          alignContent: "center",
           width: "50%",
-          height: "70%"
+          height: "70%",
+          display: "flex",
+          flexDirection: "column"
         }}
       >
-        <LoginForms message={"Log in"} />
-        <Button onClick={() => props.history.push("/signup")}>Sign up</Button>
+        <LoginForms />
+        <h3 style={{ textAlign: "center", marginTop: "auto" }}>
+          Don't have an account? <Link to={"/signup"}>Sign up</Link>
+        </h3>
       </Card>
     </div>
   );

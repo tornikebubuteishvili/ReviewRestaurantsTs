@@ -8,24 +8,27 @@ interface FormValues {
   password: string;
 }
 
-interface OtherProps {
-  message: string;
-}
-
 interface State {
   showPassword: boolean;
 }
 
-const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
-  const { touched, errors, isSubmitting, message } = props;
+const InnerForm = (props: FormikProps<FormValues>) => {
+  const { touched, errors, isSubmitting } = props;
   const [state, setState] = useState<State>({
     showPassword: false
   });
 
   return (
-    <Form>
-      <h1>{message}</h1>
+    <Form
+      style={{
+        width: "50%",
+        alignSelf: "center",
+        marginTop: "auto"
+      }}
+    >
+      <h2 style={{ marginBottom: 20, textAlign: "center" }}>Log in</h2>
       <InputGroup
+        style={{ marginBottom: 20 }}
         placeholder="Username"
         leftIcon="user"
         large={true}
@@ -35,6 +38,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
         value={props.values.username}
       />
       <InputGroup
+        style={{ marginBottom: 20 }}
         placeholder="Password"
         leftIcon="lock"
         large={true}
@@ -57,16 +61,20 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
         value={props.values.password}
       />
       {touched.password && errors.password && <div>{errors.password}</div>}
-      <button type="submit" disabled={isSubmitting}>
-        Submit
-      </button>
+      <div
+        style={{
+          textAlign: "center"
+        }}
+      >
+        <Button type={"submit"} disabled={isSubmitting}>
+          Log in
+        </Button>
+      </div>
     </Form>
   );
 };
 
-interface LoginFormProps {
-  message: string;
-}
+interface LoginFormProps {}
 
 const LoginForms = withFormik<LoginFormProps, FormValues>({
   validate: (values: FormValues) => {

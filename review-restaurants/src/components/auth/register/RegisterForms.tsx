@@ -18,18 +18,14 @@ interface FormValues {
   repeatPassword: string;
 }
 
-interface OtherProps {
-  message: string;
-}
-
 interface State {
   showPassword: boolean;
   showRepeatPassword: boolean;
   selectedRole: Role;
 }
 
-const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
-  const { touched, errors, isSubmitting, message } = props;
+const InnerForm = (props: FormikProps<FormValues>) => {
+  const { touched, errors, isSubmitting } = props;
   const [state, setState] = useState<State>({
     showPassword: false,
     showRepeatPassword: false,
@@ -37,33 +33,39 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
   });
 
   return (
-    <Form>
-      Sign up as a(n):
-      <Select
-        items={[Role.user, Role.owner, Role.admin]}
-        itemRenderer={item => {
-          return (
-            <MenuItem
-              active={item == state.selectedRole}
-              key={item}
-              onClick={() => {
-                setState({ ...state, selectedRole: item });
-              }}
-              text={Role[item]}
-            />
-          );
-        }}
-        onItemSelect={item => {
-          setState({ ...state, selectedRole: item });
-        }}
-        filterable={false}
-      >
-        <Button
-          text={Role[state.selectedRole]}
-          rightIcon="double-caret-vertical"
-        />
-      </Select>
+    <Form
+      style={{
+        width: "50%",
+        alignSelf: "center",
+        marginTop: "auto"
+      }}
+    >
+      <h2 style={{ marginBottom: 20, textAlign: "center" }}>
+        Sign up as a(n):{"  "}
+        <Select
+          items={[Role.user, Role.owner, Role.admin]}
+          itemRenderer={item => {
+            return (
+              <MenuItem
+                active={item == state.selectedRole}
+                key={item}
+                onClick={() => {
+                  setState({ ...state, selectedRole: item });
+                }}
+                text={Role[item]}
+              />
+            );
+          }}
+          onItemSelect={item => {
+            setState({ ...state, selectedRole: item });
+          }}
+          filterable={false}
+        >
+          <Button text={Role[state.selectedRole]} rightIcon="caret-down" />
+        </Select>
+      </h2>
       <InputGroup
+        style={{ marginBottom: 20 }}
         placeholder="Username"
         leftIcon="user"
         large={true}
@@ -73,6 +75,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
         value={props.values.username}
       />
       <InputGroup
+        style={{ marginBottom: 20 }}
         placeholder="Password"
         leftIcon="lock"
         large={true}
@@ -98,6 +101,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
       />
       {touched.password && errors.password && <div>{errors.password}</div>}
       <InputGroup
+        style={{ marginBottom: 20 }}
         placeholder="Repeat Password"
         leftIcon="lock"
         large={true}
@@ -129,16 +133,20 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
       {touched.repeatPassword && errors.repeatPassword && (
         <div>{errors.repeatPassword}</div>
       )}
-      <Button type={"submit"} disabled={isSubmitting}>
-        Sign up
-      </Button>
+      <div
+        style={{
+          textAlign: "center"
+        }}
+      >
+        <Button type={"submit"} disabled={isSubmitting}>
+          Sign up
+        </Button>
+      </div>
     </Form>
   );
 };
 
-interface LoginFormProps {
-  message: string;
-}
+interface LoginFormProps {}
 
 const RegisterForms = withFormik<LoginFormProps, FormValues>({
   validate: (values: FormValues) => {
