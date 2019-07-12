@@ -1,7 +1,7 @@
 import React, { useState, CSSProperties } from "react";
 import { Link } from "react-router-dom";
 
-export default function AdminRestaurantsScreen() {
+export default function RestaurantDetailsScreen() {
   return (
     <div
       style={{

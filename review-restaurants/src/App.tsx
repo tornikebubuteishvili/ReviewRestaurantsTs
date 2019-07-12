@@ -2,10 +2,10 @@ import React from "react";
 import LoginScreen from "./components/auth/login/LoginScreen";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import SignupScreen from "./components/auth/register/RegisterScreen";
-import UserFeedScreen from "./components/user/UserFeedScreen";
-import OwnerFeedScreen from "./components/owner/OwnerFeedScreen";
-import AdminRestaurantsScreen from "./components/admin/AdminRestaurantsScreen";
-import AdminUsersScreen from "./components/admin/AdminUsersScreen";
+import UserScreen from "./components/user/UserScreen";
+import OwnerScreen from "./components/owner/OwnerScreen";
+import AdminScreen from "./components/admin/AdminScreen";
+import RestaurantDetailsScreen from "./components/restaurant/RestaurantDetailsScreen";
 
 const App: React.FC = () => {
   return (
@@ -19,10 +19,10 @@ const App: React.FC = () => {
       >
         <Route exact path="/" component={LoginScreen} />
         <Route path="/signup" component={SignupScreen} />
-        <Route path="/userfeed" component={UserFeedScreen} />
-        <Route path="/ownerfeed" component={OwnerFeedScreen} />
-        <Route path="/adminrestaurants" component={AdminRestaurantsScreen} />
-        <Route path="/adminusers" component={AdminUsersScreen} />
+        <Route path="/user" component={UserScreen} />
+        <Route path="/owner" component={OwnerScreen} />
+        <Route path="/admin" component={AdminScreen} />
+        <Route path="/admin-restaurants" component={RestaurantDetailsScreen} />
       </div>
     </Router>
   );
