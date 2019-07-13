@@ -73,7 +73,7 @@ export function FetchRestaurants(request: FetchListRequest) {
       "&filterModel.Json=" +
       JSON.stringify(request.filterModel) +
       "&sortModel.Json=" +
-      JSON.stringify(request.sortModel.sortItems),
+      JSON.stringify(request.sortModel),
     { authorization: "Bearer " + GetToken() }
   );
 }
