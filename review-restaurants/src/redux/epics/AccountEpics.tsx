@@ -45,7 +45,7 @@ export const registerUserEpic: Epic<AppAction, AppAction, AppState> = action$ =>
     filter(isActionOf(registerUser.request)),
     switchMap(action =>
       from(RegisterUser(action.payload)).pipe(
-        map(registerUser.success),
+        map(_ => registerUser.success(action.payload)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(registerUser.failure(e));
@@ -150,5 +150,5 @@ export default combineEpics(
   logoutUserEpic,
   deleteUserEpic,
   fetchAccountsEpic,
-  fetchAccount
+  fetchAccountEpic
 );

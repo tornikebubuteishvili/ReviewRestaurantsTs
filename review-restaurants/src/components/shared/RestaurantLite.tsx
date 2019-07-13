@@ -1,9 +1,7 @@
 import React, { useState, CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getRestaurants } from "../../redux/selectors/OwnerSelectors";
 
-export default function OwnerFeedScreen() {
+export default function RestaurantDetailsScreen() {
   return (
     <div
       style={{

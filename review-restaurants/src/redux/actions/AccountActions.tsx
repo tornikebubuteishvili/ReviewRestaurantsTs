@@ -36,7 +36,7 @@ export const registerUser = createAsyncAction(
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAILURE
-)<RegisterRequest, RegisterResponse, any>();
+)<RegisterRequest, RegisterRequest, any>();
 
 export const UPDATE_USER_REQUEST = "Account/UPDATE_USER_REQUEST";
 export const UPDATE_USER_SUCCESS = "Account/UPDATE_USER_SUCCESS";

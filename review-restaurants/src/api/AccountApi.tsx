@@ -1,6 +1,7 @@
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import { map } from "rxjs/operators";
 import { serverAddress } from "../const";
+import { History } from "history";
 import {
   RegisterRequest,
   LoginRequest,
@@ -26,23 +27,34 @@ import { GetToken } from "../functions/StoreFunctions";
 const address = serverAddress + "Account";
 
 export function RegisterUser(request: RegisterRequest) {
+  const { history, ...req } = request;
   return ajax
-    .post(address + "/CreateAccount", JSON.stringify(request), {
+    .post(address + "/CreateAccount", JSON.stringify(req), {
       Accept: "application/json",
       "Content-Type": "application/json"
     })
     .pipe(
-      map((response: AjaxResponse) => response.response as RegisterResponse)
+      map((response: AjaxResponse) => {
+        return response.response.data.metadata as RegisterResponse;
+      })
     );
 }
 
 export function LoginUser(request: LoginRequest) {
+  const { history, ...req } = request;
   return ajax
-    .post(address + "/Authorize", JSON.stringify(request), {
+    .post(address + "/Login", JSON.stringify(req), {
       Accept: "application/json",
       "Content-Type": "application/json"
     })
-    .pipe(map((response: AjaxResponse) => response.response as LoginResponse));
+    .pipe(
+      map((response: AjaxResponse) => {
+        return {
+          ...response.response.data.metadata,
+          history: request.history
+        } as LoginResponse;
+      })
+    );
 }
 
 export function UpdateUser(request: UpdateUserRequest) {
@@ -50,10 +62,13 @@ export function UpdateUser(request: UpdateUserRequest) {
     .put(address + "/EditAccount", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: "Bearer " + GetToken()
+      authorization: GetToken()
     })
     .pipe(
-      map((response: AjaxResponse) => response.response as UpdateUserResponse)
+      map(
+        (response: AjaxResponse) =>
+          response.response.data.metadata as UpdateUserResponse
+      )
     );
 }
 
@@ -62,10 +77,13 @@ export function RefreshToken(request: RefreshTokenRequest) {
     .put(address + "/RefreshToken", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: "Bearer " + GetToken()
+      authorization: GetToken()
     })
     .pipe(
-      map((response: AjaxResponse) => response.response as RefreshTokenResponse)
+      map(
+        (response: AjaxResponse) =>
+          response.response.data.metadata as RefreshTokenResponse
+      )
     );
 }
 
@@ -74,9 +92,14 @@ export function LogoutUser(request: LogoutRequest) {
     .put(address + "/LogOut", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: "Bearer " + GetToken()
+      authorization: GetToken()
     })
-    .pipe(map((response: AjaxResponse) => response.response as LogoutResponse));
+    .pipe(
+      map(
+        (response: AjaxResponse) =>
+          response.response.data.metadata as LogoutResponse
+      )
+    );
 }
 
 export function DeleteUser(request: DeleteUserRequest) {
@@ -87,11 +110,14 @@ export function DeleteUser(request: DeleteUserRequest) {
         "uId=" +
         request.uId +
         {
-          authorization: "Bearer " + GetToken()
+          authorization: GetToken()
         }
     )
     .pipe(
-      map((response: AjaxResponse) => response.response as DeleteUserResponse)
+      map(
+        (response: AjaxResponse) =>
+          response.response.data.metadata as DeleteUserResponse
+      )
     );
 }
 
@@ -107,13 +133,13 @@ export function FetchAccounts(request: FetchListRequest) {
       JSON.stringify(request.filterModel) +
       "&sortModel.Json=" +
       JSON.stringify(request.sortModel),
-    { authorization: "Bearer " + GetToken() }
+    { authorization: GetToken() }
   );
 }
 
 export function FetchAccount(request: FetchUserRequest) {
   return ajax.getJSON<FetchUserResponse>(
     address + "/AccountDetails?" + "uId=" + request.uId,
-    { authorization: "Bearer " + GetToken() }
+    { authorization: GetToken() }
   );
 }

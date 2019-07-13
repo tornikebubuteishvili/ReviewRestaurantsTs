@@ -2,11 +2,15 @@ import React, { useState, CSSProperties } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import LoginForms from "./LoginForms";
 import { Card, Elevation, Button } from "@blueprintjs/core";
+import { LoginRequest } from "../../../api/types/Request";
+import { loginUser } from "../../../redux/actions/AccountActions";
+import { useDispatch } from "react-redux";
 
 interface State {}
 
 export default function LoginScreen(props: RouteComponentProps) {
   const [state, setState] = useState<State>({});
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -29,9 +33,14 @@ export default function LoginScreen(props: RouteComponentProps) {
           flexDirection: "column"
         }}
       >
-        <LoginForms />
+        <LoginForms
+          loginUser={(request: LoginRequest) =>
+            dispatch(loginUser.request(request))
+          }
+          history={props.history}
+        />
         <h3 style={{ textAlign: "center", marginTop: "auto" }}>
-          Don't have an account? <Link to={"/signup"}>Sign up</Link>
+          Don't have an account? <Link to={"/Signup"}>Sign up</Link>
         </h3>
       </Card>
     </div>

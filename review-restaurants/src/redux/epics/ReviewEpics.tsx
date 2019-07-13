@@ -112,7 +112,7 @@ export const fetchReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
 
 export default combineEpics(
   addReviewEpic,
-  addReviewAnswer,
+  addReviewAnswerEpic,
   updateReviewEpic,
   deleteReviewEpic,
   fetchReviewsEpic,

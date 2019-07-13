@@ -10,7 +10,7 @@ export const getRequestState = createSelector(
   (state: AppState) => state.account.isLoggingIn,
   (state: AppState) => state.account.isLoggingOut,
   (state: AppState) => state.account.isRegistering,
-  (isFetchingRestaurant, isAddingReview, isAddingAnswer) => {
-    return { isFetchingRestaurant, isAddingReview, isAddingAnswer };
+  (isLoggingIn, isLoggingOut, isRegistering) => {
+    return { isLoggingIn, isLoggingOut, isRegistering };
   }
 );

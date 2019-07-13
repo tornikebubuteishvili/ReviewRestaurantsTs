@@ -1,10 +1,12 @@
 import { Role } from "./Enum";
 import { FilterModel, SortModel } from "./Model";
+import { History } from "history";
 
 /* Account requests */
 export interface LoginRequest {
   readonly username: string;
   readonly password: string;
+  readonly history: History;
 }
 
 export interface LogoutRequest {}
@@ -13,6 +15,7 @@ export interface RegisterRequest {
   readonly username: string;
   readonly password: string;
   readonly role: Role;
+  readonly history: History;
 }
 
 export interface RefreshTokenRequest {

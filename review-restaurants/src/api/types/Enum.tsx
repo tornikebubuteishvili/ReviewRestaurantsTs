@@ -1,7 +1,7 @@
 export enum Role {
-  user = 1,
-  owner,
-  admin
+  User = 1,
+  Owner,
+  Admin
 }
 
 export enum Comparison {

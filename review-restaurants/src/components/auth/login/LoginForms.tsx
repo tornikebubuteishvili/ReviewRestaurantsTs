@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import { withFormik, FormikProps, FormikErrors, Form, Field } from "formik";
 import { InputGroup, Tooltip, Button, Intent } from "@blueprintjs/core";
+import { LoginRequest } from "../../../api/types/Request";
+import { History } from "history";
 
 interface FormValues {
   username: string;
   password: string;
+  history: History;
+  loginUser: (request: LoginRequest) => void;
 }
 
 interface State {
@@ -74,9 +78,20 @@ const InnerForm = (props: FormikProps<FormValues>) => {
   );
 };
 
-interface LoginFormProps {}
+interface LoginFormProps {
+  history: History;
+  loginUser: (request: LoginRequest) => void;
+}
 
 const LoginForms = withFormik<LoginFormProps, FormValues>({
+  mapPropsToValues: props => {
+    return {
+      history: props.history,
+      loginUser: props.loginUser,
+      password: "",
+      username: ""
+    };
+  },
   validate: (values: FormValues) => {
     let errors: FormikErrors<FormValues> = {};
     if (!values.username) {
@@ -88,7 +103,13 @@ const LoginForms = withFormik<LoginFormProps, FormValues>({
     return errors;
   },
 
-  handleSubmit: values => {}
+  handleSubmit: values => {
+    values.loginUser({
+      password: values.password,
+      username: values.username,
+      history: values.history
+    });
+  }
 })(InnerForm);
 
 export default LoginForms;

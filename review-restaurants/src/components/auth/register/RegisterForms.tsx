@@ -10,12 +10,18 @@ import {
 } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/select";
 import { Role } from "../../../api/types/Enum";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../../redux/actions/AccountActions";
+import { RegisterRequest } from "../../../api/types/Request";
+import { History } from "history";
 
 interface FormValues {
   role: Role;
   username: string;
   password: string;
   repeatPassword: string;
+  history: History;
+  registerUser: (request: RegisterRequest) => void;
 }
 
 interface State {
@@ -29,7 +35,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
   const [state, setState] = useState<State>({
     showPassword: false,
     showRepeatPassword: false,
-    selectedRole: Role.user
+    selectedRole: Role.User
   });
 
   return (
@@ -43,7 +49,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
       <h2 style={{ marginBottom: 20, textAlign: "center" }}>
         Sign up as a(n):{"  "}
         <Select
-          items={[Role.user, Role.owner, Role.admin]}
+          items={[Role.User, Role.Owner, Role.Admin]}
           itemRenderer={item => {
             return (
               <MenuItem
@@ -51,14 +57,13 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                 key={item}
                 onClick={() => {
                   setState({ ...state, selectedRole: item });
+                  props.setFieldValue("role", item);
                 }}
                 text={Role[item]}
               />
             );
           }}
-          onItemSelect={item => {
-            setState({ ...state, selectedRole: item });
-          }}
+          onItemSelect={() => {}}
           filterable={false}
         >
           <Button text={Role[state.selectedRole]} rightIcon="caret-down" />
@@ -146,9 +151,22 @@ const InnerForm = (props: FormikProps<FormValues>) => {
   );
 };
 
-interface LoginFormProps {}
+interface LoginFormProps {
+  history: History;
+  registerUser: (request: RegisterRequest) => void;
+}
 
 const RegisterForms = withFormik<LoginFormProps, FormValues>({
+  mapPropsToValues: props => {
+    return {
+      history: props.history,
+      registerUser: props.registerUser,
+      password: "",
+      repeatPassword: "",
+      role: Role.User,
+      username: ""
+    };
+  },
   validate: (values: FormValues) => {
     let errors: FormikErrors<FormValues> = {};
     if (!values.username) {
@@ -163,7 +181,14 @@ const RegisterForms = withFormik<LoginFormProps, FormValues>({
     return errors;
   },
 
-  handleSubmit: values => {}
+  handleSubmit: values => {
+    values.registerUser({
+      role: values.role,
+      password: values.password,
+      username: values.username,
+      history: values.history
+    });
+  }
 })(InnerForm);
 
 export default RegisterForms;

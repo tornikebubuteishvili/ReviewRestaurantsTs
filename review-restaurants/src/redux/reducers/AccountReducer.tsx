@@ -9,7 +9,7 @@ export default function AccountReducer(
     id: "",
     username: "",
     token: "",
-    role: Role.user,
+    role: Role.User,
     isLoggedIn: false,
     isLoggingIn: false,
     isLoggingOut: false,
@@ -45,7 +45,7 @@ export default function AccountReducer(
         id: "",
         username: "",
         token: "",
-        role: Role.user,
+        role: Role.User,
         isLoggedIn: false,
         isLoggingOut: false
       };

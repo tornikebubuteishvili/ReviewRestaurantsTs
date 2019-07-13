@@ -1,10 +1,15 @@
 import { RestaurantLite, Restaurant, Review, User } from "./Model";
+import { History } from "history";
+import { Role } from "./Enum";
 
 /* Account requests */
 export interface LoginResponse {
   readonly uId: string;
   readonly username: string;
+  readonly role: Role;
   readonly token: string;
+  readonly refreshToken: string;
+  readonly history: History;
 }
 
 export interface LogoutResponse {}
