@@ -1,27 +1,19 @@
 import React, { useState, CSSProperties } from "react";
-import { Link } from "react-router-dom";
-
-export default function RestaurantDetailsScreen() {
+import { Link, RouteComponentProps } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getRestaurant } from "../../redux/selectors/RestaurantDetailsSelectors";
+import Header from "../shared/Header";
+const list = [1, 2, 3];
+export default function RestaurantDetailsScreen(props: RouteComponentProps) {
+  const restaurant = useSelector(getRestaurant);
   return (
-    <div
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        display: "flex",
-        justifyContent: "center",
-        alignContent: "center"
-      }}
-    >
-      <div
-        style={{
-          alignSelf: "center",
-          width: "70%",
-          height: "70%",
-          backgroundColor: "red"
-        }}
-      >
-        <Link to={"/"}>logout</Link>
-      </div>
+    <div style={{ flex: 1 }}>
+      <Header logout={() => {}} addRestaurant={() => {}} />
+      <ul style={{ width: "100%", justifyContent: "center", padding: 0 }}>
+        {list.map(function(item) {
+          return <p key={item}>g</p>;
+        })}
+      </ul>
     </div>
   );
 }

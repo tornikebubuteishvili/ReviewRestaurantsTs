@@ -38,10 +38,9 @@ export default function PostReducer(
       return {
         ...state,
         restaurantIds: [
-          ...state.restaurantIds,
           ...action.payload.items.map(restaurant => restaurant.uId)
         ],
-        restaurants: { ...state.restaurants, ...newRestaurants },
+        restaurants: { ...newRestaurants },
         isFetchingRestaurants: false
       };
     }
@@ -55,7 +54,9 @@ export default function PostReducer(
       const newRestaurant: RestaurantLite = {
         uId: action.payload.uId,
         name: state.newRestaurantName,
-        average: -1
+        average: 0,
+        restaurantOwnerName: "",
+        restaurantOwnerUId: ""
       };
       return {
         ...state,

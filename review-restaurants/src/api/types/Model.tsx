@@ -1,4 +1,4 @@
-import { Comparison, Role } from "./Enum";
+import { Comparison, Role, FilterLogic } from "./Enum";
 
 /* Account */
 export interface LoginFormValues {
@@ -38,6 +38,8 @@ export interface RestaurantLite {
   readonly uId: string;
   readonly name: string;
   readonly average: number;
+  readonly restaurantOwnerUId: string;
+  readonly restaurantOwnerName: string;
 }
 
 export interface User {
@@ -49,13 +51,14 @@ export interface User {
 
 /* Filter-Sort */
 export interface FilterItem {
-  readonly ropertyName: string;
+  readonly propertyName: string;
   readonly value: any;
   readonly comparison: Comparison;
 }
 
 export interface FilterModel {
   readonly filterItems: FilterItem[];
+  readonly filterLogic: FilterLogic;
 }
 
 export interface SortItem {

@@ -1,4 +1,4 @@
-import { ajax, AjaxResponse } from "rxjs/ajax";
+import { ajax, AjaxResponse, AjaxError } from "rxjs/ajax";
 import { serverAddress } from "../const";
 import { GetToken } from "../functions/StoreFunctions";
 import {
@@ -15,7 +15,8 @@ import {
   UpdateRestaurantResponse,
   DeleteRestaurantResponse
 } from "./types/Response";
-import { map } from "rxjs/operators";
+import { map, catchError } from "rxjs/operators";
+import { of } from "rxjs/internal/observable/of";
 
 const address = serverAddress + "Restaurant";
 
@@ -62,7 +63,7 @@ export function DeleteRestaurant(request: DeleteRestaurantRequest) {
 }
 
 export function FetchRestaurants(request: FetchListRequest) {
-  return ajax.getJSON<FetchRestaurantsResponse>(
+  return ajax.getJSON<{ data: FetchRestaurantsResponse }>(
     address +
       "/RestaurantsList?" +
       "pageSize=" +
@@ -72,7 +73,7 @@ export function FetchRestaurants(request: FetchListRequest) {
       "&filterModel.Json=" +
       JSON.stringify(request.filterModel) +
       "&sortModel.Json=" +
-      JSON.stringify(request.sortModel),
+      JSON.stringify(request.sortModel.sortItems),
     { authorization: "Bearer " + GetToken() }
   );
 }

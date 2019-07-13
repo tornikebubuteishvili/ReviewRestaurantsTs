@@ -25,7 +25,10 @@ const App: React.FC = () => {
           <Route path="/User" component={UserScreen} />
           <Route path="/Owner" component={OwnerScreen} />
           <Route path="/Admin" component={AdminScreen} />
-          <Route path="/AdminRestaurants" component={RestaurantDetailsScreen} />
+          <Route
+            path="/RestaurantDetails"
+            component={RestaurantDetailsScreen}
+          />
         </div>
       </Router>
     </Provider>

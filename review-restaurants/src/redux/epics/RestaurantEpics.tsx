@@ -83,9 +83,12 @@ export const fetchRestaurantsEpic: Epic<
     filter(isActionOf(fetchRestaurants.request)),
     switchMap(action =>
       from(FetchRestaurants(action.payload)).pipe(
-        map(fetchRestaurants.success),
+        map(a => {
+          console.log(JSON.stringify(a));
+          return fetchRestaurants.success(a.data);
+        }),
         catchError((e: AjaxError) => {
-          console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
+          console.log(JSON.stringify(e));
           return of(fetchRestaurants.failure(e));
         })
       )

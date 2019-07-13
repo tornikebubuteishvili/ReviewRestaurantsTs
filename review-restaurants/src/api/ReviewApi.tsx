@@ -26,7 +26,7 @@ export function AddReview(request: AddReviewRequest) {
     .post(address + "/CreateReview", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: "Bearer " + GetToken()
+      authorization: GetToken()
     })
     .pipe(
       map((response: AjaxResponse) => response.response as AddReviewResponse)
@@ -38,7 +38,7 @@ export function AddReviewAnswer(request: AddReviewAnswerRequest) {
     .put(address + "/AnswerReview", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: "Bearer " + GetToken()
+      authorization: GetToken()
     })
     .pipe(
       map(
@@ -52,7 +52,7 @@ export function UpdateReview(request: UpdateReviewRequest) {
     .put(address + "/EditReview", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: "Bearer " + GetToken()
+      authorization: GetToken()
     })
     .pipe(
       map((response: AjaxResponse) => response.response as UpdateReviewResponse)
@@ -62,7 +62,7 @@ export function UpdateReview(request: UpdateReviewRequest) {
 export function DeleteReview(request: DeleteReviewRequest) {
   return ajax
     .delete(address + "/DeleteReview?" + "uId=" + request.uId, {
-      authorization: "Bearer " + GetToken()
+      authorization: GetToken()
     })
     .pipe(
       map((response: AjaxResponse) => response.response as DeleteReviewResponse)
@@ -81,13 +81,13 @@ export function FetchReviews(request: FetchListRequest) {
       JSON.stringify(request.filterModel) +
       "&sortModel.Json=" +
       JSON.stringify(request.sortModel),
-    { authorization: "Bearer " + GetToken() }
+    { authorization: GetToken() }
   );
 }
 
 export function FetchReview(request: FetchReviewRequest) {
   return ajax.getJSON<FetchReviewResponse>(
     address + "/ReviewDetails?" + "uId=" + request.uId,
-    { authorization: "Bearer " + GetToken() }
+    { authorization: GetToken() }
   );
 }

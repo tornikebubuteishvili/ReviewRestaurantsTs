@@ -1,11 +1,11 @@
 export enum Role {
-  User = 1,
+  User = 0,
   Owner,
   Admin
 }
 
 export enum Comparison {
-  Equal,
+  Equal = 0,
   LessThan,
   LessThanOrEqual,
   GreaterThan,

@@ -26,7 +26,15 @@ export default function PostReducer(
 ): RestaurantDetailsState {
   switch (action.type) {
     case getType(RestaurantActions.fetchRestaurant.request): {
-      return { ...state, isFetchingRestaurant: true };
+      return {
+        ...state,
+        restaurant: {
+          ...state.restaurant,
+          name: action.payload.name,
+          average: action.payload.average
+        },
+        isFetchingRestaurant: true
+      };
     }
     case getType(RestaurantActions.fetchRestaurant.success): {
       return {
