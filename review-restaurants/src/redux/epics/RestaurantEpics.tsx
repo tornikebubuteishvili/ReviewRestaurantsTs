@@ -113,7 +113,6 @@ export const fetchRestaurantsEpic: Epic<
     switchMap(action =>
       from(FetchRestaurants(action.payload)).pipe(
         map(a => {
-          console.log(JSON.stringify(a));
           return fetchRestaurants.success(a.data);
         }),
         catchError((e: AjaxError) => {

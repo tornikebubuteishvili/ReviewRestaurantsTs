@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Card, Elevation, Button, Dialog, InputGroup } from "@blueprintjs/core";
-import { useSelector } from "react-redux";
-import { getAccountState } from "../../redux/selectors/AccountSelectors";
+import React, { useState, useEffect } from "react";
+import { Button, Dialog, InputGroup } from "@blueprintjs/core";
 
 interface Props {
+  readonly title: string;
+  readonly inputValue: string;
   readonly isOpen: boolean;
-  readonly onClick: (name: string) => void;
+  readonly onAcceptClick: (name: string) => void;
+  readonly onClose: () => void;
 }
 
 interface State {
@@ -13,12 +14,20 @@ interface State {
 }
 
 export default function AddRestaurantDialog(props: Props) {
-  const accountState = useSelector(getAccountState);
   const [state, setState] = useState<State>({ inputValue: "" });
+
+  useEffect(() => {
+    setState({ inputValue: props.inputValue });
+  }, [props.inputValue]);
 
   return (
     <Dialog
       isOpen={props.isOpen}
+      canOutsideClickClose
+      onClose={() => {
+        setState({ inputValue: "" });
+        props.onClose();
+      }}
       style={{
         alignSelf: "center",
         justifyContent: "center",
@@ -30,7 +39,7 @@ export default function AddRestaurantDialog(props: Props) {
         padding: 50
       }}
     >
-      <h2 style={{ padding: 10, marginBottom: "auto" }}>Add a restaurant</h2>
+      <h2 style={{ padding: 10, marginBottom: "auto" }}>{props.title}</h2>
       <InputGroup
         style={{ marginBottom: 20 }}
         placeholder="Name"
@@ -43,11 +52,11 @@ export default function AddRestaurantDialog(props: Props) {
       <Button
         style={{}}
         onClick={() => {
-          props.onClick(state.inputValue);
+          props.onAcceptClick(state.inputValue);
           setState({ inputValue: "" });
         }}
       >
-        Add
+        Accept
       </Button>
     </Dialog>
   );

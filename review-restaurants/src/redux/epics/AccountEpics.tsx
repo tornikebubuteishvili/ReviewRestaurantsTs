@@ -119,7 +119,7 @@ export const fetchAccountsEpic: Epic<
     filter(isActionOf(fetchAccounts.request)),
     switchMap(action =>
       from(FetchAccounts(action.payload)).pipe(
-        map(fetchAccounts.success),
+        map(response => fetchAccounts.success(response.data)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(fetchAccounts.failure(e));

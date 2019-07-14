@@ -28,7 +28,6 @@ import {
 
 interface State {
   isAddRestaurantDialogOpen: boolean;
-  isReplyDialogOpen: boolean;
   shouldFetchRestaurants: boolean;
   shouldFetchPendingReviews: boolean;
 }
@@ -36,7 +35,6 @@ interface State {
 export default function OwnerScreen(props: RouteComponentProps) {
   const [state, setState] = useState<State>({
     isAddRestaurantDialogOpen: false,
-    isReplyDialogOpen: false,
     shouldFetchRestaurants: true,
     shouldFetchPendingReviews: true
   });
@@ -70,7 +68,6 @@ export default function OwnerScreen(props: RouteComponentProps) {
         );
       }
       if (state.shouldFetchPendingReviews) {
-        console.log("should");
         setState({ ...state, shouldFetchPendingReviews: false });
         dispatch(
           fetchReviews.request({
@@ -175,8 +172,11 @@ export default function OwnerScreen(props: RouteComponentProps) {
       />
       <SearchBar onFilterClick={onFilterClick} />
       <AddRestaurantDialog
+        title={"Add a restaurant"}
+        inputValue={""}
         isOpen={state.isAddRestaurantDialogOpen}
-        onClick={onAddRestaurantClick}
+        onAcceptClick={onAddRestaurantClick}
+        onClose={() => setState({ ...state, isAddRestaurantDialogOpen: false })}
       />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <ul style={{ width: "100%", justifyContent: "center", padding: 0 }}>

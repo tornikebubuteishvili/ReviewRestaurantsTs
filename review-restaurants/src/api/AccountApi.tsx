@@ -122,7 +122,7 @@ export function DeleteUser(request: DeleteUserRequest) {
 }
 
 export function FetchAccounts(request: FetchListRequest) {
-  return ajax.getJSON<FetchAccountsResponse>(
+  return ajax.getJSON<{ data: FetchAccountsResponse }>(
     address +
       "/AccountsList?" +
       "pageSize=" +
