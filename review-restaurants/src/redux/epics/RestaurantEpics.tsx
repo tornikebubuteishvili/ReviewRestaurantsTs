@@ -85,6 +85,28 @@ export const updateRestaurantEpic: Epic<
     )
   );
 
+export const fetchRestaurantsAfterUpdateOrDeleteRestaurantEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf([deleteRestaurant.success, updateRestaurant.success])),
+    switchMap(_ =>
+      of(
+        fetchRestaurants.request({
+          filterModel: {
+            filterItems: [],
+            filterLogic: FilterLogic.And
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "average", desc: true }] }
+        })
+      )
+    )
+  );
+
 export const deleteRestaurantEpic: Epic<
   AppAction,
   AppAction,
@@ -146,6 +168,7 @@ export default combineEpics(
   fetchRestaurantsAfterAddRestaurantEpic,
   updateRestaurantEpic,
   deleteRestaurantEpic,
+  fetchRestaurantsAfterUpdateOrDeleteRestaurantEpic,
   fetchRestaurantsEpic,
   fetchRestaurantEpic
 );

@@ -104,15 +104,9 @@ export function LogoutUser(request: LogoutRequest) {
 
 export function DeleteUser(request: DeleteUserRequest) {
   return ajax
-    .delete(
-      address +
-        "/DeleteAccount?" +
-        "uId=" +
-        request.uId +
-        {
-          authorization: "Bearer " + GetToken()
-        }
-    )
+    .delete(address + "/DeleteAccount?" + "uId=" + request.uId, {
+      authorization: "Bearer " + GetToken()
+    })
     .pipe(
       map(
         (response: AjaxResponse) =>

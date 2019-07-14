@@ -9,6 +9,8 @@ import { Role } from "../../api/types/Enum";
 interface Props {
   readonly review: Review;
   readonly onReplyClick: (id: string, answer: string) => void;
+  readonly onEditClick: (id: string) => void;
+  readonly onDeleteClick: (id: string) => void;
 }
 
 interface State {
@@ -75,6 +77,18 @@ export default function ReviewView(props: Props) {
           <div />
         )}
       </div>
+      {accountState.role === Role.Admin ? (
+        <div>
+          <Button onClick={() => props.onEditClick(props.review.uId)}>
+            Edit
+          </Button>
+          <Button onClick={() => props.onDeleteClick(props.review.uId)}>
+            Delete
+          </Button>
+        </div>
+      ) : (
+        <div />
+      )}
     </Card>
   );
 }

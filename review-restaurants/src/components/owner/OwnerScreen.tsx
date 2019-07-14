@@ -200,6 +200,8 @@ export default function OwnerScreen(props: RouteComponentProps) {
                 key={item}
                 review={pendingReviews[item]}
                 onReplyClick={onReplyClick}
+                onEditClick={() => {}}
+                onDeleteClick={() => {}}
               />
             );
           })}

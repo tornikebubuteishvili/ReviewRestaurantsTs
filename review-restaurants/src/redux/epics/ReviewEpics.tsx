@@ -24,6 +24,7 @@ import {
 import { Comparison, FilterLogic } from "../../api/types/Enum";
 import store from "../store/StoreConfig";
 import { getAccountState } from "../selectors/AccountSelectors";
+import { getRestaurant } from "../selectors/RestaurantDetailsSelectors";
 
 export const addReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
   action$.pipe(
@@ -133,7 +134,7 @@ export const updateReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
     filter(isActionOf(updateReview.request)),
     switchMap(action =>
       from(UpdateReview(action.payload)).pipe(
-        map(updateReview.success),
+        map(_ => updateReview.success(action.payload)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(updateReview.failure(e));
@@ -147,10 +148,38 @@ export const deleteReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
     filter(isActionOf(deleteReview.request)),
     switchMap(action =>
       from(DeleteReview(action.payload)).pipe(
-        map(deleteReview.success),
+        map(_ => deleteReview.success(action.payload)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(deleteReview.failure(e));
+        })
+      )
+    )
+  );
+
+export const fetchReviewsAfterUpdateOrDeleteReviewEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf([updateReview.success, deleteReview.success])),
+    switchMap(action =>
+      of(
+        fetchReviews.request({
+          filterModel: {
+            filterItems: [
+              {
+                comparison: Comparison.Equal,
+                propertyName: "restaurantUId",
+                value: getRestaurant(store.getState()).uId
+              }
+            ],
+            filterLogic: FilterLogic.Or
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "visitDate", desc: true }] }
         })
       )
     )
@@ -191,6 +220,7 @@ export default combineEpics(
   fetchReviewsAfterAddReviewAnswerEpic,
   updateReviewEpic,
   deleteReviewEpic,
+  fetchReviewsAfterUpdateOrDeleteReviewEpic,
   fetchReviewsEpic,
   fetchReviewEpic
 );

@@ -46,7 +46,7 @@ export const updateReview = createAsyncAction(
   UPDATE_REVIEW_REQUEST,
   UPDATE_REVIEW_SUCCESS,
   UPDATE_REVIEW_FAILURE
-)<UpdateReviewRequest, UpdateReviewResponse, any>();
+)<UpdateReviewRequest, UpdateReviewRequest, any>();
 
 export const DELETE_REVIEW_REQUEST = "Review/DELETE_REVIEW_REQUEST";
 export const DELETE_REVIEW_SUCCESS = "Review/DELETE_REVIEW_SUCCESS";
@@ -55,7 +55,7 @@ export const deleteReview = createAsyncAction(
   DELETE_REVIEW_REQUEST,
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_FAILURE
-)<DeleteReviewRequest, DeleteReviewResponse, any>();
+)<DeleteReviewRequest, DeleteReviewRequest, any>();
 
 export const FETCH_REVIEWS_REQUEST = "Review/FETCH_REVIEWS_REQUEST";
 export const FETCH_REVIEWS_SUCCESS = "Review/FETCH_REVIEWS_SUCCESS";

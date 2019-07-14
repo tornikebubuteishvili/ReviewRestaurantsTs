@@ -13,19 +13,26 @@ import { Role, Comparison, FilterLogic } from "../../api/types/Enum";
 import {
   fetchReviews,
   addReview,
-  addReviewAnswer
+  addReviewAnswer,
+  updateReview,
+  deleteReview
 } from "../../redux/actions/ReviewActions";
 import ReviewView from "./ReviewView";
 import AddReviewDialog from "./AddReviewDialog";
+import EditReviewDialog from "./EditReviewDialog";
 
 interface State {
   isAddReviewDialogOpen: boolean;
+  isEditReviewDialogOpen: boolean;
+  editingReviewId: string;
   shouldFetchReviews: boolean;
 }
 
 export default function RestaurantDetailsScreen(props: RouteComponentProps) {
   const [state, setState] = useState<State>({
     isAddReviewDialogOpen: false,
+    isEditReviewDialogOpen: false,
+    editingReviewId: "",
     shouldFetchReviews: true
   });
   const accountState = useSelector(getAccountState);
@@ -80,6 +87,31 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
     setState({ ...state, isAddReviewDialogOpen: false });
   }
 
+  function onEditReviewClick(id: string) {
+    setState({ ...state, isEditReviewDialogOpen: true, editingReviewId: id });
+  }
+  function onEditReviewAcceptClick(
+    comment: string,
+    star: number,
+    visitDate: Date,
+    answer: string
+  ) {
+    dispatch(
+      updateReview.request({
+        uId: state.editingReviewId,
+        star,
+        comment,
+        answer,
+        visitDate
+      })
+    );
+    setState({ ...state, isEditReviewDialogOpen: false, editingReviewId: "" });
+  }
+
+  function onDeleteReviewClick(id: string) {
+    dispatch(deleteReview.request({ uId: id }));
+  }
+
   return (
     <div style={{ flex: 1, textAlign: "center" }}>
       <Header
@@ -104,6 +136,33 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
         onAddClick={onAddReviewClick}
         onClose={() => setState({ ...state, isAddReviewDialogOpen: false })}
       />
+      <EditReviewDialog
+        review={
+          state.editingReviewId !== ""
+            ? reviews[state.editingReviewId]
+            : {
+                answer: "",
+                visitDate: new Date(),
+                uId: "",
+                comment: "",
+                restaurantOwnerUId: "",
+                restaurantUId: "",
+                hasAnswer: false,
+                restaurant: "",
+                reviewer: "",
+                star: 0
+              }
+        }
+        isOpen={state.isEditReviewDialogOpen}
+        onAcceptClick={onEditReviewAcceptClick}
+        onClose={() =>
+          setState({
+            ...state,
+            isEditReviewDialogOpen: false,
+            editingReviewId: ""
+          })
+        }
+      />
       <h2>{restaurant.name}</h2>
       <h3>Rating: {restaurant.average}</h3>
       <ul
@@ -115,9 +174,15 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
         }}
       >
         {reviewIds.map(function(item) {
+          console.log(JSON.stringify(reviews[item]));
           return (
             <li key={item}>
-              <ReviewView review={reviews[item]} onReplyClick={onReplyClick} />
+              <ReviewView
+                review={reviews[item]}
+                onReplyClick={onReplyClick}
+                onEditClick={onEditReviewClick}
+                onDeleteClick={onDeleteReviewClick}
+              />
             </li>
           );
         })}

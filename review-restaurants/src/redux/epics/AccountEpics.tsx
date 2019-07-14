@@ -25,6 +25,7 @@ import {
   FetchAccounts,
   FetchAccount
 } from "../../api/AccountApi";
+import { Comparison, FilterLogic } from "../../api/types/Enum";
 
 export const loginUserEpic: Epic<AppAction, AppAction, AppState> = action$ =>
   action$.pipe(
@@ -110,6 +111,28 @@ export const deleteUserEpic: Epic<AppAction, AppAction, AppState> = action$ =>
     )
   );
 
+export const fetchAccountsAfterUpdateOrDeleteUserEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf([deleteUser.success, updateUser.success])),
+    switchMap(_ =>
+      of(
+        fetchAccounts.request({
+          filterModel: {
+            filterItems: [],
+            filterLogic: FilterLogic.And
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "username", desc: false }] }
+        })
+      )
+    )
+  );
+
 export const fetchAccountsEpic: Epic<
   AppAction,
   AppAction,
@@ -146,6 +169,7 @@ export default combineEpics(
   loginUserEpic,
   registerUserEpic,
   updateUserEpic,
+  fetchAccountsAfterUpdateOrDeleteUserEpic,
   refreshTokenEpic,
   logoutUserEpic,
   deleteUserEpic,

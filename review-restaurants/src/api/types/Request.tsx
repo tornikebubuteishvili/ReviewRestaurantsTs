@@ -75,6 +75,8 @@ export interface UpdateReviewRequest {
   readonly uId: string;
   readonly star: number;
   readonly comment: string;
+  readonly answer: string;
+  readonly visitDate: Date;
 }
 
 export interface UpdateUserRequest {

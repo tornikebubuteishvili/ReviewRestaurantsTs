@@ -43,11 +43,8 @@ export default function AdminReducer(
       });
       return {
         ...state,
-        userIds: [
-          ...state.userIds,
-          ...action.payload.items.map(user => user.uId)
-        ],
-        users: { ...state.users, ...newUsers },
+        userIds: action.payload.items.map(user => user.uId),
+        users: newUsers,
         isFetchingUsers: false
       };
     }
@@ -106,11 +103,8 @@ export default function AdminReducer(
       });
       return {
         ...state,
-        restaurantIds: [
-          ...state.restaurantIds,
-          ...action.payload.items.map(restaurant => restaurant.uId)
-        ],
-        restaurants: { ...state.restaurants, ...newRestaurants },
+        restaurantIds: action.payload.items.map(restaurant => restaurant.uId),
+        restaurants: newRestaurants,
         isFetchingRestaurants: false
       };
     }
@@ -121,18 +115,7 @@ export default function AdminReducer(
       return { ...state, isUpdatingRestaurant: true };
     }
     case getType(RestaurantActions.updateRestaurant.success): {
-      const restaurant = state.restaurants[action.payload.uId];
-      return {
-        ...state,
-        restaurants: {
-          ...state.restaurants,
-          [action.payload.uId]: {
-            ...restaurant,
-            name: action.payload.name
-          }
-        },
-        isUpdatingRestaurant: false
-      };
+      return { ...state, isUpdatingRestaurant: false };
     }
     case getType(RestaurantActions.updateRestaurant.failure): {
       return { ...state, isUpdatingRestaurant: false };
@@ -141,18 +124,7 @@ export default function AdminReducer(
       return { ...state, isDeletingRestaurant: true };
     }
     case getType(RestaurantActions.deleteRestaurant.success): {
-      const {
-        [action.payload.uId]: {},
-        ...newRestaurants
-      } = state.restaurants;
-      return {
-        ...state,
-        restaurants: newRestaurants,
-        restaurantIds: state.restaurantIds.filter(
-          id => id !== action.payload.uId
-        ),
-        isDeletingRestaurant: false
-      };
+      return { ...state, isDeletingRestaurant: false };
     }
     case getType(RestaurantActions.deleteRestaurant.failure): {
       return { ...state, isDeletingRestaurant: false };

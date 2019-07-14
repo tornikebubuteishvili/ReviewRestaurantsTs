@@ -25,7 +25,7 @@ export default function SearchBar(props: Props) {
         justifyContent: "center"
       }}
     >
-      Filter by rating from:
+      Filter restaurants by rating from:
       <NumericInput
         style={{ marginLeft: 10, marginRight: 10 }}
         value={state.lowerRating}

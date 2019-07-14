@@ -12,7 +12,9 @@ import Header from "../shared/Header";
 import {
   fetchRestaurant,
   addRestaurant,
-  fetchRestaurants
+  fetchRestaurants,
+  updateRestaurant,
+  deleteRestaurant
 } from "../../redux/actions/RestaurantActions";
 import AddRestaurantDialog from "../shared/AddRestaurantDialog";
 import { getAccountState } from "../../redux/selectors/AccountSelectors";
@@ -26,7 +28,11 @@ import {
 } from "../../redux/actions/ReviewActions";
 import { getUsers, getUserIds } from "../../redux/selectors/AdminSelectors";
 import EditUserDialog from "./EditUserDialog";
-import { fetchAccounts } from "../../redux/actions/AccountActions";
+import {
+  fetchAccounts,
+  updateUser,
+  deleteUser
+} from "../../redux/actions/AccountActions";
 import UserView from "./UserView";
 
 interface State {
@@ -98,22 +104,6 @@ export default function AdminScreen(props: RouteComponentProps) {
     props.history.push("/RestaurantDetails");
   }
 
-  function onAddRestaurantClick(name: string) {
-    dispatch(addRestaurant.request({ name, ownerUId: accountState.id }));
-    setState({ ...state, isAddRestaurantDialogOpen: false });
-  }
-
-  function onReplyClick(id: string, answer: string) {
-    dispatch(
-      addReviewAnswer.request({
-        reviewUId: id,
-        answer,
-        ownerUId: accountState.id,
-        restaurantUId: ""
-      })
-    );
-  }
-
   function onFilterClick(lowerRating: number, higherRating: number) {
     dispatch(
       fetchRestaurants.request({
@@ -128,11 +118,6 @@ export default function AdminScreen(props: RouteComponentProps) {
               comparison: Comparison.LessThanOrEqual,
               propertyName: "average",
               value: higherRating
-            },
-            {
-              comparison: Comparison.Equal,
-              propertyName: "restaurantOwnerUId",
-              value: accountState.id
             }
           ],
           filterLogic: FilterLogic.And
@@ -148,7 +133,16 @@ export default function AdminScreen(props: RouteComponentProps) {
     setState({ ...state, editingUserId: id, isEditUserDialogOpen: true });
   }
 
-  function onUserDeleteClick(id: string) {}
+  function onUserEditAcceptClick(username: string, password: string) {
+    dispatch(
+      updateUser.request({ uId: state.editingUserId, username, password })
+    );
+    setState({ ...state, isEditUserDialogOpen: false, editingUserId: "" });
+  }
+
+  function onUserDeleteClick(id: string) {
+    dispatch(deleteUser.request({ uId: id }));
+  }
 
   function onRestaurantEditClick(id: string) {
     setState({
@@ -158,33 +152,45 @@ export default function AdminScreen(props: RouteComponentProps) {
     });
   }
 
-  function onRestaurantDeleteClick(id: string) {}
+  function onRestaurantEditAcceptClick(name: string) {
+    dispatch(
+      updateRestaurant.request({ uId: state.editingRestaurantId, name })
+    );
+    setState({
+      ...state,
+      isAddRestaurantDialogOpen: false,
+      editingRestaurantId: ""
+    });
+  }
+
+  function onRestaurantDeleteClick(id: string) {
+    dispatch(deleteRestaurant.request({ uId: id }));
+  }
 
   return (
     <div style={{ flex: 1 }}>
       <Header
         title={accountState.username}
         history={props.history}
-        leftElement={
-          <Button
-            onClick={() =>
-              setState({
-                ...state,
-                isAddRestaurantDialogOpen: !state.isAddRestaurantDialogOpen
-              })
-            }
-          >
-            Add restaurant
-          </Button>
-        }
+        leftElement={<div />}
       />
       <SearchBar onFilterClick={onFilterClick} />
       <AddRestaurantDialog
         title={"Edit restaurant"}
-        inputValue={restaurants[state.editingRestaurantId].name}
+        inputValue={
+          state.editingRestaurantId !== ""
+            ? restaurants[state.editingRestaurantId].name
+            : ""
+        }
         isOpen={state.isAddRestaurantDialogOpen}
-        onAcceptClick={onAddRestaurantClick}
-        onClose={() => setState({ ...state, isAddRestaurantDialogOpen: false })}
+        onAcceptClick={onRestaurantEditAcceptClick}
+        onClose={() =>
+          setState({
+            ...state,
+            isAddRestaurantDialogOpen: false,
+            editingRestaurantId: ""
+          })
+        }
       />
       <EditUserDialog
         user={
@@ -193,8 +199,10 @@ export default function AdminScreen(props: RouteComponentProps) {
             : { password: "", username: "", role: Role.User, uId: "" }
         }
         isOpen={state.isEditUserDialogOpen}
-        onAcceptClick={() => {}}
-        onClose={() => setState({ ...state, isEditUserDialogOpen: false })}
+        onAcceptClick={onUserEditAcceptClick}
+        onClose={() =>
+          setState({ ...state, isEditUserDialogOpen: false, editingUserId: "" })
+        }
       />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <ul style={{ width: "100%", justifyContent: "center", padding: 0 }}>
