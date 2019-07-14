@@ -62,7 +62,7 @@ export function UpdateUser(request: UpdateUserRequest) {
     .put(address + "/EditAccount", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: GetToken()
+      authorization: "Bearer " + GetToken()
     })
     .pipe(
       map(
@@ -77,7 +77,7 @@ export function RefreshToken(request: RefreshTokenRequest) {
     .put(address + "/RefreshToken", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: GetToken()
+      authorization: "Bearer " + GetToken()
     })
     .pipe(
       map(
@@ -92,7 +92,7 @@ export function LogoutUser(request: LogoutRequest) {
     .put(address + "/LogOut", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: GetToken()
+      authorization: "Bearer " + GetToken()
     })
     .pipe(
       map(
@@ -110,7 +110,7 @@ export function DeleteUser(request: DeleteUserRequest) {
         "uId=" +
         request.uId +
         {
-          authorization: GetToken()
+          authorization: "Bearer " + GetToken()
         }
     )
     .pipe(
@@ -133,13 +133,13 @@ export function FetchAccounts(request: FetchListRequest) {
       JSON.stringify(request.filterModel) +
       "&sortModel.Json=" +
       JSON.stringify(request.sortModel),
-    { authorization: GetToken() }
+    { authorization: "Bearer " + GetToken() }
   );
 }
 
 export function FetchAccount(request: FetchUserRequest) {
   return ajax.getJSON<FetchUserResponse>(
     address + "/AccountDetails?" + "uId=" + request.uId,
-    { authorization: GetToken() }
+    { authorization: "Bearer " + GetToken() }
   );
 }

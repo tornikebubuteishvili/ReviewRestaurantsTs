@@ -21,7 +21,7 @@ export const addRestaurant = createAsyncAction(
   ADD_RESTAURANT_REQUEST,
   ADD_RESTAURANT_SUCCESS,
   ADD_RESTAURANT_FAILURE
-)<AddRestaurantRequest, AddRestaurantResponse, any>();
+)<AddRestaurantRequest, AddRestaurantRequest, any>();
 
 export const UPDATE_RESTAURANT_REQUEST = "Restaurant/UPDATE_RESTAURANT_REQUEST";
 export const UPDATE_RESTAURANT_SUCCESS = "Restaurant/UPDATE_RESTAURANT_SUCCESS";

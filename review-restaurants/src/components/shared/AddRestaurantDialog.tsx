@@ -19,7 +19,6 @@ export default function AddRestaurantDialog(props: Props) {
   return (
     <Dialog
       isOpen={props.isOpen}
-      canOutsideClickClose
       style={{
         alignSelf: "center",
         justifyContent: "center",

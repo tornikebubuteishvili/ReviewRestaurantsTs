@@ -3,8 +3,9 @@ import { RestaurantAction, ReviewAction } from "../types/ActionTypes";
 import * as RestaurantActions from "../actions/RestaurantActions";
 import * as ReviewActions from "../actions/ReviewActions";
 import { getType } from "typesafe-actions";
+import { Review } from "../../api/types/Model";
 
-export default function PostReducer(
+export default function RestaurantDetailsReducer(
   state: RestaurantDetailsState = {
     restaurant: {
       average: -1,
@@ -19,6 +20,7 @@ export default function PostReducer(
     answer: "",
 
     isFetchingRestaurant: false,
+    isFetchingReviews: false,
     isAddingReview: false,
     isAddingAnswer: false
   },
@@ -30,6 +32,7 @@ export default function PostReducer(
         ...state,
         restaurant: {
           ...state.restaurant,
+          uId: action.payload.uId,
           name: action.payload.name,
           average: action.payload.average
         },
@@ -46,24 +49,33 @@ export default function PostReducer(
     case getType(RestaurantActions.fetchRestaurant.failure): {
       return { ...state, isFetchingRestaurant: false };
     }
+    case getType(ReviewActions.fetchReviews.request): {
+      return { ...state, isFetchingReviews: true };
+    }
+    case getType(ReviewActions.fetchReviews.success): {
+      let newReviews: { [id: string]: Review } = {};
+      action.payload.items.forEach(review => {
+        newReviews = {
+          ...newReviews,
+          [review.uId]: review
+        };
+      });
+      return {
+        ...state,
+        reviewIds: action.payload.items.map(review => review.uId),
+        reviews: newReviews,
+        isFetchingReviews: false
+      };
+    }
+    case getType(ReviewActions.fetchReviews.failure): {
+      return { ...state, isFetchingReviews: false };
+    }
     case getType(ReviewActions.addReview.request): {
       return { ...state, isAddingReview: true };
     }
     case getType(ReviewActions.addReview.success): {
       return {
         ...state,
-        reviewIds: [...state.reviewIds, "new"],
-        reviews: {
-          ...state.reviews,
-          ["new"]: {
-            uId: "new",
-            restaurant: state.restaurant.name,
-            reviewer: "You",
-            answer: "",
-            hasAnswer: false,
-            ...action.payload
-          }
-        },
         isAddingReview: false
       };
     }
@@ -78,8 +90,8 @@ export default function PostReducer(
         ...state,
         reviews: {
           ...state.reviews,
-          [action.payload.uId]: {
-            ...state.reviews[action.payload.uId],
+          [action.payload.reviewUId]: {
+            ...state.reviews[action.payload.reviewUId],
             hasAnswer: true,
             answer: state.answer
           }

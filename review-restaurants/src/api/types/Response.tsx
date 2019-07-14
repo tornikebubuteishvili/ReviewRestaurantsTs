@@ -6,7 +6,7 @@ import { Role } from "./Enum";
 export interface LoginResponse {
   readonly uId: string;
   readonly username: string;
-  readonly role: Role;
+  readonly role: "User" | "Owner" | "Admin";
   readonly token: string;
   readonly refreshToken: string;
   readonly history: History;

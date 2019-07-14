@@ -19,6 +19,7 @@ import {
   FetchRestaurants,
   FetchRestaurant
 } from "../../api/RestaurantApi ";
+import { Comparison, FilterLogic } from "../../api/types/Enum";
 
 export const addRestaurantEpic: Epic<
   AppAction,
@@ -29,10 +30,38 @@ export const addRestaurantEpic: Epic<
     filter(isActionOf(addRestaurant.request)),
     switchMap(action =>
       from(AddRestaurant(action.payload)).pipe(
-        map(addRestaurant.success),
+        map(_ => addRestaurant.success(action.payload)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(addRestaurant.failure(e));
+        })
+      )
+    )
+  );
+
+export const fetchRestaurantsAfterAddRestaurantEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf(addRestaurant.success)),
+    switchMap(action =>
+      of(
+        fetchRestaurants.request({
+          filterModel: {
+            filterItems: [
+              {
+                comparison: Comparison.Equal,
+                propertyName: "restaurantOwnerUId",
+                value: action.payload.ownerUId
+              }
+            ],
+            filterLogic: FilterLogic.And
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "average", desc: true }] }
         })
       )
     )
@@ -104,7 +133,7 @@ export const fetchRestaurantEpic: Epic<
     filter(isActionOf(fetchRestaurant.request)),
     switchMap(action =>
       from(FetchRestaurant(action.payload)).pipe(
-        map(fetchRestaurant.success),
+        map(response => fetchRestaurant.success(response.data)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(fetchRestaurant.failure(e));
@@ -115,6 +144,7 @@ export const fetchRestaurantEpic: Epic<
 
 export default combineEpics(
   addRestaurantEpic,
+  fetchRestaurantsAfterAddRestaurantEpic,
   updateRestaurantEpic,
   deleteRestaurantEpic,
   fetchRestaurantsEpic,

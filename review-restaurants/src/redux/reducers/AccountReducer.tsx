@@ -24,6 +24,7 @@ export default function AccountReducer(
       return {
         ...state,
         id: action.payload.uId,
+        role: Role[action.payload.role],
         username: action.payload.username,
         token: action.payload.token,
         isLoggedIn: true,

@@ -78,7 +78,7 @@ export function FetchRestaurants(request: FetchListRequest) {
 }
 
 export function FetchRestaurant(request: FetchRestaurantRequest) {
-  return ajax.getJSON<FetchRestaurantResponse>(
+  return ajax.getJSON<{ data: FetchRestaurantResponse }>(
     address + "/RestaurantDetails?" + "uId=" + request.uId,
     { authorization: "Bearer " + GetToken() }
   );

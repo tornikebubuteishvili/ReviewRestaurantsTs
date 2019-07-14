@@ -1,15 +1,22 @@
 import React from "react";
 import { Card, Elevation, Button } from "@blueprintjs/core";
-import { useSelector } from "react-redux";
-import { getAccountState } from "../../redux/selectors/AccountSelectors";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/actions/AccountActions";
+import { History } from "history";
 
 interface Props {
-  readonly logout: () => void;
-  readonly addRestaurant: () => void;
+  readonly title: string;
+  readonly leftElement: JSX.Element;
+  readonly history: History;
 }
 
 export default function Header(props: Props) {
-  const accountState = useSelector(getAccountState);
+  const dispatch = useDispatch();
+
+  function logout() {
+    dispatch(logoutUser.request({}));
+    props.history.push("/");
+  }
 
   return (
     <Card
@@ -22,16 +29,17 @@ export default function Header(props: Props) {
         justifyContent: "center"
       }}
     >
-      <Button onClick={props.addRestaurant}>Add restaurant</Button>
-      <p
+      {props.leftElement}
+      <h3
         style={{
           marginLeft: "auto",
+          marginRight: 20,
           textAlign: "center"
         }}
       >
-        {accountState.username}
-      </p>
-      <Button onClick={props.logout}>Log out</Button>
+        {props.title}
+      </h3>
+      <Button onClick={logout}>Log out</Button>
     </Card>
   );
 }

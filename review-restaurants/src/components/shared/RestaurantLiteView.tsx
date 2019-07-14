@@ -1,11 +1,11 @@
 import React, { useState, CSSProperties } from "react";
-import { Link } from "react-router-dom";
 import { Card, Elevation } from "@blueprintjs/core";
 import { RestaurantLite } from "../../api/types/Model";
 
 interface Props {
   readonly restaurant: RestaurantLite;
   readonly onClick: (id: string) => void;
+  readonly rightElement: JSX.Element;
 }
 
 export default function RestaurantLiteView(props: Props) {
@@ -21,14 +21,19 @@ export default function RestaurantLiteView(props: Props) {
         width: "80%",
         minHeight: 80,
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         marginBottom: 20,
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        borderRadius: 10
       }}
     >
-      {props.restaurant.name}
-      {props.restaurant.average}
+      <div style={{ marginRight: "auto" }}>
+        <h3>{props.restaurant.name}</h3>
+        <p>rating: {props.restaurant.average}</p>
+        <p>owner: {props.restaurant.restaurantOwnerName}</p>
+      </div>
+      {props.rightElement}
     </Card>
   );
 }

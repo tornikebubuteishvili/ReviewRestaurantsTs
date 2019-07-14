@@ -54,13 +54,15 @@ export interface AddRestaurantRequest {
 export interface AddReviewRequest {
   readonly star: number;
   readonly comment: string;
-  readonly visitDate: string;
+  readonly visitDate: Date;
   readonly restaurantUId: string;
 }
 
 export interface AddReviewAnswerRequest {
   readonly reviewUId: string;
   readonly answer: string;
+  readonly ownerUId: string;
+  readonly restaurantUId: string;
 }
 
 /* Update requests */

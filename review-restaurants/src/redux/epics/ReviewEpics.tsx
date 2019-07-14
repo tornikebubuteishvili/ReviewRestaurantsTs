@@ -21,6 +21,9 @@ import {
   FetchReview,
   AddReviewAnswer
 } from "../../api/ReviewApi";
+import { Comparison, FilterLogic } from "../../api/types/Enum";
+import store from "../store/StoreConfig";
+import { getAccountState } from "../selectors/AccountSelectors";
 
 export const addReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
   action$.pipe(
@@ -36,6 +39,34 @@ export const addReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
     )
   );
 
+export const fetchReviewsAfterAddReviewEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf(addReview.success)),
+    switchMap(action =>
+      of(
+        fetchReviews.request({
+          filterModel: {
+            filterItems: [
+              {
+                comparison: Comparison.Equal,
+                propertyName: "restaurantUId",
+                value: action.payload.restaurantUId
+              }
+            ],
+            filterLogic: FilterLogic.Or
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "visitDate", desc: true }] }
+        })
+      )
+    )
+  );
+
 export const addReviewAnswerEpic: Epic<
   AppAction,
   AppAction,
@@ -45,10 +76,53 @@ export const addReviewAnswerEpic: Epic<
     filter(isActionOf(addReviewAnswer.request)),
     switchMap(action =>
       from(AddReviewAnswer(action.payload)).pipe(
-        map(addReviewAnswer.success),
+        map(_ => addReviewAnswer.success(action.payload)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(addReviewAnswer.failure(e));
+        })
+      )
+    )
+  );
+
+export const fetchReviewsAfterAddReviewAnswerEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf(addReviewAnswer.success)),
+    switchMap(action =>
+      of(
+        fetchReviews.request({
+          filterModel: {
+            filterItems: [
+              {
+                comparison: Comparison.Equal,
+                propertyName:
+                  action.payload.ownerUId !== ""
+                    ? "restaurantOwnerUId"
+                    : "restaurantUId",
+                value:
+                  action.payload.ownerUId !== ""
+                    ? action.payload.ownerUId
+                    : action.payload.restaurantUId
+              },
+              ...(action.payload.ownerUId !== ""
+                ? [
+                    {
+                      comparison: Comparison.Equal,
+                      propertyName: "hasAnswer",
+                      value: false
+                    }
+                  ]
+                : [])
+            ],
+            filterLogic: FilterLogic.And
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "visitDate", desc: true }] }
         })
       )
     )
@@ -87,7 +161,7 @@ export const fetchReviewsEpic: Epic<AppAction, AppAction, AppState> = action$ =>
     filter(isActionOf(fetchReviews.request)),
     switchMap(action =>
       from(FetchReviews(action.payload)).pipe(
-        map(fetchReviews.success),
+        map(response => fetchReviews.success(response.data)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
           return of(fetchReviews.failure(e));
@@ -112,7 +186,9 @@ export const fetchReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
 
 export default combineEpics(
   addReviewEpic,
+  fetchReviewsAfterAddReviewEpic,
   addReviewAnswerEpic,
+  fetchReviewsAfterAddReviewAnswerEpic,
   updateReviewEpic,
   deleteReviewEpic,
   fetchReviewsEpic,

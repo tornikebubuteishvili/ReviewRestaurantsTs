@@ -4,7 +4,7 @@ import * as RestaurantActions from "../actions/RestaurantActions";
 import { getType } from "typesafe-actions";
 import { RestaurantLite } from "../../api/types/Model";
 
-export default function CommentReducer(
+export default function UserReducer(
   state: UserState = {
     restaurants: {},
     restaurantIds: [],

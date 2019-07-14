@@ -37,7 +37,7 @@ export const addReviewAnswer = createAsyncAction(
   ADD_REVIEW_ANSWER_REQUEST,
   ADD_REVIEW_ANSWER_SUCCESS,
   ADD_REVIEW_ANSWER_FAILURE
-)<AddReviewAnswerRequest, AddReviewAnswerResponse, any>();
+)<AddReviewAnswerRequest, AddReviewAnswerRequest, any>();
 
 export const UPDATE_REVIEW_REQUEST = "Review/UPDATE_REVIEW_REQUEST";
 export const UPDATE_REVIEW_SUCCESS = "Review/UPDATE_REVIEW_SUCCESS";

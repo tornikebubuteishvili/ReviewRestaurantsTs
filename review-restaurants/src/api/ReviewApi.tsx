@@ -19,14 +19,14 @@ import {
 } from "./types/Response";
 import { map } from "rxjs/operators";
 
-const address = serverAddress + "Restaurant";
+const address = serverAddress + "Review";
 
 export function AddReview(request: AddReviewRequest) {
   return ajax
     .post(address + "/CreateReview", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: GetToken()
+      authorization: "Bearer " + GetToken()
     })
     .pipe(
       map((response: AjaxResponse) => response.response as AddReviewResponse)
@@ -34,11 +34,12 @@ export function AddReview(request: AddReviewRequest) {
 }
 
 export function AddReviewAnswer(request: AddReviewAnswerRequest) {
+  const { ownerUId, restaurantUId, ...req } = request;
   return ajax
-    .put(address + "/AnswerReview", JSON.stringify(request), {
+    .put(address + "/AnswerReview", JSON.stringify(req), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: GetToken()
+      authorization: "Bearer " + GetToken()
     })
     .pipe(
       map(
@@ -52,7 +53,7 @@ export function UpdateReview(request: UpdateReviewRequest) {
     .put(address + "/EditReview", JSON.stringify(request), {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: GetToken()
+      authorization: "Bearer " + GetToken()
     })
     .pipe(
       map((response: AjaxResponse) => response.response as UpdateReviewResponse)
@@ -62,7 +63,7 @@ export function UpdateReview(request: UpdateReviewRequest) {
 export function DeleteReview(request: DeleteReviewRequest) {
   return ajax
     .delete(address + "/DeleteReview?" + "uId=" + request.uId, {
-      authorization: GetToken()
+      authorization: "Bearer " + GetToken()
     })
     .pipe(
       map((response: AjaxResponse) => response.response as DeleteReviewResponse)
@@ -70,7 +71,7 @@ export function DeleteReview(request: DeleteReviewRequest) {
 }
 
 export function FetchReviews(request: FetchListRequest) {
-  return ajax.getJSON<FetchReviewsResponse>(
+  return ajax.getJSON<{ data: FetchReviewsResponse }>(
     address +
       "/ReviewsList?" +
       "pageSize=" +
@@ -81,13 +82,13 @@ export function FetchReviews(request: FetchListRequest) {
       JSON.stringify(request.filterModel) +
       "&sortModel.Json=" +
       JSON.stringify(request.sortModel),
-    { authorization: GetToken() }
+    { authorization: "Bearer " + GetToken() }
   );
 }
 
 export function FetchReview(request: FetchReviewRequest) {
   return ajax.getJSON<FetchReviewResponse>(
     address + "/ReviewDetails?" + "uId=" + request.uId,
-    { authorization: GetToken() }
+    { authorization: "Bearer " + GetToken() }
   );
 }

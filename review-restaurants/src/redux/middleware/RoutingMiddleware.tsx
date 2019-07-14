@@ -3,7 +3,6 @@ import { getType } from "typesafe-actions";
 import * as AccountActions from "../actions/AccountActions";
 import * as RestaurantActions from "../actions/RestaurantActions";
 import { AppAction } from "../types/ActionTypes";
-import { Role } from "../../api/types/Enum";
 
 const RoutingMiddleware = () => (dispatch: Dispatch) => (action: AppAction) => {
   switch (action.type) {

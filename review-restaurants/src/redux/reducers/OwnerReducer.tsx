@@ -5,7 +5,7 @@ import * as ReviewActions from "../actions/ReviewActions";
 import { getType } from "typesafe-actions";
 import { RestaurantLite, Review } from "../../api/types/Model";
 
-export default function PostReducer(
+export default function OwnerReducer(
   state: OwnerState = {
     restaurants: {},
     restaurantIds: [],
@@ -51,17 +51,17 @@ export default function PostReducer(
       return { ...state, isAddingRestaurant: true };
     }
     case getType(RestaurantActions.addRestaurant.success): {
-      const newRestaurant: RestaurantLite = {
-        uId: action.payload.uId,
-        name: state.newRestaurantName,
-        average: 0,
-        restaurantOwnerName: "",
-        restaurantOwnerUId: ""
-      };
+      // const newRestaurant: RestaurantLite = {
+      //   uId: action.payload.uId,
+      //   name: state.newRestaurantName,
+      //   average: 0,
+      //   restaurantOwnerName: "",
+      //   restaurantOwnerUId: ""
+      // };
       return {
         ...state,
-        restaurantIds: [...state.restaurantIds, action.payload.uId],
-        restaurants: { ...state.restaurants, newRestaurant },
+        // restaurantIds: [...state.restaurantIds, action.payload.uId],
+        // restaurants: { ...state.restaurants, newRestaurant },
         isAddingRestaurant: false
       };
     }
@@ -81,11 +81,8 @@ export default function PostReducer(
       });
       return {
         ...state,
-        pendingReviewIds: [
-          ...state.pendingReviewIds,
-          ...action.payload.items.map(review => review.uId)
-        ],
-        pendingReviews: { ...state.pendingReviews, ...newReviews },
+        pendingReviewIds: action.payload.items.map(review => review.uId),
+        pendingReviews: newReviews,
         isFetchingPendingReviews: false
       };
     }
@@ -96,18 +93,7 @@ export default function PostReducer(
       return { ...state, isAddingAnswer: true };
     }
     case getType(ReviewActions.addReviewAnswer.success): {
-      const {
-        [action.payload.uId]: {},
-        ...newPendingReviews
-      } = state.pendingReviews;
-      return {
-        ...state,
-        pendingReviews: newPendingReviews,
-        pendingReviewIds: state.pendingReviewIds.filter(
-          id => id !== action.payload.uId
-        ),
-        isAddingAnswer: false
-      };
+      return { ...state, isAddingAnswer: false };
     }
     case getType(ReviewActions.addReviewAnswer.failure): {
       return { ...state, isAddingAnswer: false };

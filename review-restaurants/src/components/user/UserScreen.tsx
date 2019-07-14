@@ -1,27 +1,110 @@
-import React, { useState, CSSProperties } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getRestaurants,
+  getRestaurantIds
+} from "../../redux/selectors/OwnerSelectors";
+import RestaurantLiteView from "../shared/RestaurantLiteView";
+import Header from "../shared/Header";
+import {
+  fetchRestaurant,
+  fetchRestaurants
+} from "../../redux/actions/RestaurantActions";
+import { getAccountState } from "../../redux/selectors/AccountSelectors";
+import { FilterLogic, Comparison } from "../../api/types/Enum";
+import SearchBar from "../shared/SearchBar";
 
-export default function UserFeedScreen() {
+interface State {
+  isAddReviewDialogOpen: boolean;
+  shouldFetchRestaurants: boolean;
+  reviewingId: string;
+}
+
+export default function UserScreen(props: RouteComponentProps) {
+  const [state, setState] = useState<State>({
+    isAddReviewDialogOpen: false,
+    shouldFetchRestaurants: true,
+    reviewingId: ""
+  });
+  const restaurants = useSelector(getRestaurants);
+  const restaurantIds = useSelector(getRestaurantIds);
+  const accountState = useSelector(getAccountState);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (accountState.id !== "" && state.shouldFetchRestaurants) {
+      setState({ ...state, shouldFetchRestaurants: false });
+      dispatch(
+        fetchRestaurants.request({
+          filterModel: {
+            filterItems: [],
+            filterLogic: FilterLogic.Or
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "average", desc: true }] }
+        })
+      );
+    }
+  });
+
+  function onFilterClick(lowerRating: number, higherRating: number) {
+    dispatch(
+      fetchRestaurants.request({
+        filterModel: {
+          filterItems: [
+            {
+              comparison: Comparison.GreaterThanOrEqual,
+              propertyName: "average",
+              value: lowerRating
+            },
+            {
+              comparison: Comparison.LessThanOrEqual,
+              propertyName: "average",
+              value: higherRating
+            }
+          ],
+          filterLogic: FilterLogic.And
+        },
+        page: 1,
+        pageSize: 200,
+        sortModel: { sortItems: [{ sortBy: "average", desc: true }] }
+      })
+    );
+  }
+
+  function onRestaurantClick(id: string) {
+    dispatch(
+      fetchRestaurant.request({
+        uId: id,
+        name: restaurants[id].name,
+        average: restaurants[id].average
+      })
+    );
+    props.history.push("/RestaurantDetails");
+  }
+
   return (
-    <div
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        display: "flex",
-        justifyContent: "center",
-        alignContent: "center"
-      }}
-    >
-      <div
-        style={{
-          alignSelf: "center",
-          width: "70%",
-          height: "70%",
-          backgroundColor: "red"
-        }}
-      >
-        <Link to={"/"}>logout</Link>
-      </div>
+    <div style={{ flex: 1 }}>
+      <Header
+        title={accountState.username}
+        history={props.history}
+        leftElement={<div />}
+      />
+      <SearchBar onFilterClick={onFilterClick} />
+      <ul style={{ width: "100%", justifyContent: "center", padding: 0 }}>
+        {restaurantIds.map(function(item) {
+          return (
+            <RestaurantLiteView
+              key={item}
+              restaurant={restaurants[item]}
+              onClick={onRestaurantClick}
+              rightElement={<div />}
+            />
+          );
+        })}
+      </ul>
     </div>
   );
 }

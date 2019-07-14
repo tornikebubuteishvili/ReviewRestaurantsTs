@@ -68,6 +68,7 @@ export type RestaurantDetailsState = {
   readonly answer: string;
 
   readonly isFetchingRestaurant: boolean;
+  readonly isFetchingReviews: boolean;
   readonly isAddingReview: boolean;
   readonly isAddingAnswer: boolean;
 };

@@ -18,7 +18,8 @@ export interface Review {
   readonly uId: string;
   readonly star: number;
   readonly comment: string;
-  readonly visitDate: string;
+  readonly visitDate: Date;
+  readonly restaurantOwnerUId: string;
   readonly restaurantUId: string;
   readonly restaurant: string;
   readonly reviewer: string;
