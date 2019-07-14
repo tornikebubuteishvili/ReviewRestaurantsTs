@@ -35,7 +35,6 @@ export function RegisterUser(request: RegisterRequest) {
     })
     .pipe(
       map((response: AjaxResponse) => {
-        console.log(JSON.stringify(response));
         return response.response.data as RegisterResponse;
       })
     );
@@ -50,7 +49,6 @@ export function LoginUser(request: LoginRequest) {
     })
     .pipe(
       map((response: AjaxResponse) => {
-        console.log(JSON.stringify(response));
         return {
           ...response.response.data.metadata,
           history: request.history

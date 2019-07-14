@@ -19,32 +19,41 @@ import { Comparison, FilterLogic } from "../../api/types/Enum";
 
 interface State {
   isDialogOpen: boolean;
+  shouldFetchRestaurants: boolean;
 }
 
 export default function OwnerScreen(props: RouteComponentProps) {
-  const [state, setState] = useState<State>({ isDialogOpen: false });
+  const [state, setState] = useState<State>({
+    isDialogOpen: false,
+    shouldFetchRestaurants: true
+  });
   const restaurants = useSelector(getRestaurants);
   const restaurantIds = useSelector(getRestaurantIds);
   const accountState = useSelector(getAccountState);
   const dispatch = useDispatch();
 
-  dispatch(
-    fetchRestaurants.request({
-      filterModel: {
-        filterItems: [
-          {
-            comparison: Comparison.Equal,
-            propertyName: "restaurantOwnerUId",
-            value: accountState.id
-          }
-        ],
-        filterLogic: FilterLogic.Or
-      },
-      page: 1,
-      pageSize: 200,
-      sortModel: { sortItems: [{ sortBy: "average", desc: true }] }
-    })
-  );
+  useEffect(() => {
+    if (accountState.id !== "" && state.shouldFetchRestaurants) {
+      setState({ ...state, shouldFetchRestaurants: false });
+      dispatch(
+        fetchRestaurants.request({
+          filterModel: {
+            filterItems: [
+              {
+                comparison: Comparison.Equal,
+                propertyName: "restaurantOwnerUId",
+                value: accountState.id
+              }
+            ],
+            filterLogic: FilterLogic.Or
+          },
+          page: 1,
+          pageSize: 200,
+          sortModel: { sortItems: [{ sortBy: "average", desc: true }] }
+        })
+      );
+    }
+  });
 
   function onRestaurantClick(id: string) {
     dispatch(
@@ -66,7 +75,9 @@ export default function OwnerScreen(props: RouteComponentProps) {
     <div style={{ flex: 1 }}>
       <Header
         logout={() => {}}
-        addRestaurant={() => setState({ isDialogOpen: !state.isDialogOpen })}
+        addRestaurant={() =>
+          setState({ ...state, isDialogOpen: !state.isDialogOpen })
+        }
       />
       <AddRestaurantDialog
         isOpen={state.isDialogOpen}

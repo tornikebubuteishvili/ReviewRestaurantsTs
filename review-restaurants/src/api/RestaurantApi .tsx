@@ -1,4 +1,4 @@
-import { ajax, AjaxResponse, AjaxError } from "rxjs/ajax";
+import { ajax, AjaxResponse } from "rxjs/ajax";
 import { serverAddress } from "../const";
 import { GetToken } from "../functions/StoreFunctions";
 import {
@@ -15,8 +15,7 @@ import {
   UpdateRestaurantResponse,
   DeleteRestaurantResponse
 } from "./types/Response";
-import { map, catchError } from "rxjs/operators";
-import { of } from "rxjs/internal/observable/of";
+import { map } from "rxjs/operators";
 
 const address = serverAddress + "Restaurant";
 
