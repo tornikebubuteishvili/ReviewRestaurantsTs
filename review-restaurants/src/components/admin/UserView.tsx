@@ -30,7 +30,7 @@ export default function UserView(props: Props) {
       <div style={{ marginRight: "auto" }}>
         <h3>{props.user.username}</h3>
         <p>password: {props.user.password}</p>
-        <p>role: {Role[props.user.role]}</p>
+        <p>role: {props.user.role}</p>
       </div>
       <div>
         <Button onClick={() => props.onEditClick(props.user.uId)}>Edit</Button>

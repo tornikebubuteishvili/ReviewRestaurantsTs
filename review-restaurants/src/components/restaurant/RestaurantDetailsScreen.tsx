@@ -173,19 +173,47 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
           textAlign: "start"
         }}
       >
-        {reviewIds.map(function(item) {
-          console.log(JSON.stringify(reviews[item]));
-          return (
-            <li key={item}>
-              <ReviewView
-                review={reviews[item]}
-                onReplyClick={onReplyClick}
-                onEditClick={onEditReviewClick}
-                onDeleteClick={onDeleteReviewClick}
-              />
-            </li>
-          );
-        })}
+        {restaurant.highestRatedReviewUId !== "" &&
+        restaurant.highestRatedReviewUId !== null &&
+        restaurant.highestRatedReviewUId !== undefined &&
+        reviews[restaurant.highestRatedReviewUId] !== undefined ? (
+          <div>
+            Highest rated review:
+            <ReviewView
+              review={reviews[restaurant.highestRatedReviewUId]}
+              onReplyClick={onReplyClick}
+              onEditClick={onEditReviewClick}
+              onDeleteClick={onDeleteReviewClick}
+            />
+            Lowest rated review:
+            <ReviewView
+              review={reviews[restaurant.lowestRatedReviewUId]}
+              onReplyClick={onReplyClick}
+              onEditClick={onEditReviewClick}
+              onDeleteClick={onDeleteReviewClick}
+            />
+          </div>
+        ) : (
+          <div>No reviews yet.</div>
+        )}
+        {reviewIds
+          .filter(
+            item =>
+              item !== restaurant.highestRatedReviewUId &&
+              item !== restaurant.lowestRatedReviewUId
+          )
+          .map(function(item) {
+            return (
+              <li key={item}>
+                <ReviewView
+                  review={reviews[item]}
+                  onReplyClick={onReplyClick}
+                  onEditClick={onEditReviewClick}
+                  onDeleteClick={onDeleteReviewClick}
+                />
+              </li>
+            );
+          })}
       </ul>
     </div>
   );
