@@ -69,6 +69,18 @@ export const fetchReviewsAfterAddReviewEpic: Epic<
     )
   );
 
+export const fetchRestaurantAfterAddReviewEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf(addReview.success)),
+    switchMap(action =>
+      of(fetchRestaurant.request({ uId: action.payload.restaurantUId }))
+    )
+  );
+
 export const addReviewAnswerEpic: Epic<
   AppAction,
   AppAction,
@@ -229,6 +241,7 @@ export const fetchReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
 export default combineEpics(
   addReviewEpic,
   fetchReviewsAfterAddReviewEpic,
+  fetchRestaurantAfterAddReviewEpic,
   addReviewAnswerEpic,
   fetchReviewsAfterAddReviewAnswerEpic,
   fetchRestaurantAfterAddReviewAnswerEpic,
