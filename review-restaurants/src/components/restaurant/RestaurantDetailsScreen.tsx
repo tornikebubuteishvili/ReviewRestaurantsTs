@@ -64,7 +64,7 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
     }
   });
 
-  function onReplyClick(id: string, answer: string) {
+  function onReplyClick(id: string, _: string, answer: string) {
     dispatch(
       addReviewAnswer.request({
         reviewUId: id,
