@@ -31,7 +31,7 @@ export default function AdminReducer(
 ): AdminState {
   switch (action.type) {
     case getType(AccountActions.fetchAccounts.request): {
-      return { ...state, isFetchingUsers: true };
+      return { ...state, users: {}, userIds: [], isFetchingUsers: true };
     }
     case getType(AccountActions.fetchAccounts.success): {
       let newUsers: { [id: string]: User } = {};
@@ -91,7 +91,12 @@ export default function AdminReducer(
       return { ...state, isDeletingUser: false };
     }
     case getType(RestaurantActions.fetchRestaurants.request): {
-      return { ...state, isFetchingRestaurants: true };
+      return {
+        ...state,
+        restaurantIds: [],
+        restaurants: {},
+        isFetchingRestaurants: true
+      };
     }
     case getType(RestaurantActions.fetchRestaurants.success): {
       let newRestaurants: { [id: string]: RestaurantLite } = {};

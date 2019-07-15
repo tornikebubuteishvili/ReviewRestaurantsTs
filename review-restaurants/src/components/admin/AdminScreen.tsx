@@ -96,9 +96,7 @@ export default function AdminScreen(props: RouteComponentProps) {
   function onRestaurantClick(id: string) {
     dispatch(
       fetchRestaurant.request({
-        uId: id,
-        name: restaurants[id].name,
-        average: restaurants[id].average
+        uId: id
       })
     );
     props.history.push("/RestaurantDetails");

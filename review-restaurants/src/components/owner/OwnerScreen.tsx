@@ -98,9 +98,7 @@ export default function OwnerScreen(props: RouteComponentProps) {
   function onRestaurantClick(id: string) {
     dispatch(
       fetchRestaurant.request({
-        uId: id,
-        name: restaurants[id].name,
-        average: restaurants[id].average
+        uId: id
       })
     );
     props.history.push("/RestaurantDetails");

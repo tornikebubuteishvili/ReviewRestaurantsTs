@@ -33,8 +33,10 @@ export default function RestaurantDetailsReducer(
         restaurant: {
           ...state.restaurant,
           uId: action.payload.uId,
-          name: action.payload.name,
-          average: action.payload.average
+          name: "",
+          average: 0,
+          highestRatedReviewUId: "",
+          lowestRatedReviewUId: ""
         },
         isFetchingRestaurant: true
       };
@@ -50,7 +52,7 @@ export default function RestaurantDetailsReducer(
       return { ...state, isFetchingRestaurant: false };
     }
     case getType(ReviewActions.fetchReviews.request): {
-      return { ...state, isFetchingReviews: true };
+      return { ...state, reviewIds: [], reviews: {}, isFetchingReviews: true };
     }
     case getType(ReviewActions.fetchReviews.success): {
       let newReviews: { [id: string]: Review } = {};

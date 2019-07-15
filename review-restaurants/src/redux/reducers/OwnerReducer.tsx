@@ -25,7 +25,12 @@ export default function OwnerReducer(
 ): OwnerState {
   switch (action.type) {
     case getType(RestaurantActions.fetchRestaurants.request): {
-      return { ...state, isFetchingRestaurants: true };
+      return {
+        ...state,
+        restaurants: {},
+        restaurantIds: [],
+        isFetchingRestaurants: true
+      };
     }
     case getType(RestaurantActions.fetchRestaurants.success): {
       let newRestaurants: { [id: string]: RestaurantLite } = {};
@@ -37,10 +42,8 @@ export default function OwnerReducer(
       });
       return {
         ...state,
-        restaurantIds: [
-          ...action.payload.items.map(restaurant => restaurant.uId)
-        ],
-        restaurants: { ...newRestaurants },
+        restaurantIds: action.payload.items.map(restaurant => restaurant.uId),
+        restaurants: newRestaurants,
         isFetchingRestaurants: false
       };
     }
@@ -51,17 +54,8 @@ export default function OwnerReducer(
       return { ...state, isAddingRestaurant: true };
     }
     case getType(RestaurantActions.addRestaurant.success): {
-      // const newRestaurant: RestaurantLite = {
-      //   uId: action.payload.uId,
-      //   name: state.newRestaurantName,
-      //   average: 0,
-      //   restaurantOwnerName: "",
-      //   restaurantOwnerUId: ""
-      // };
       return {
         ...state,
-        // restaurantIds: [...state.restaurantIds, action.payload.uId],
-        // restaurants: { ...state.restaurants, newRestaurant },
         isAddingRestaurant: false
       };
     }
@@ -69,7 +63,12 @@ export default function OwnerReducer(
       return { ...state, isAddingRestaurant: false };
     }
     case getType(ReviewActions.fetchReviews.request): {
-      return { ...state, isFetchingPendingReviews: true };
+      return {
+        ...state,
+        pendingReviewIds: [],
+        pendingReviews: {},
+        isFetchingPendingReviews: true
+      };
     }
     case getType(ReviewActions.fetchReviews.success): {
       let newReviews: { [id: string]: Review } = {};

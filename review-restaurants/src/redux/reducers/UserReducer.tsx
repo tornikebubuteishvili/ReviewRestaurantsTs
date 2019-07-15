@@ -16,7 +16,12 @@ export default function UserReducer(
 ): UserState {
   switch (action.type) {
     case getType(RestaurantActions.fetchRestaurants.request): {
-      return { ...state, isFetchingRestaurants: true };
+      return {
+        ...state,
+        restaurantIds: [],
+        restaurants: {},
+        isFetchingRestaurants: true
+      };
     }
     case getType(RestaurantActions.fetchRestaurants.success): {
       let newRestaurants: { [id: string]: RestaurantLite } = {};
@@ -28,11 +33,8 @@ export default function UserReducer(
       });
       return {
         ...state,
-        restaurantIds: [
-          ...state.restaurantIds,
-          ...action.payload.items.map(restaurant => restaurant.uId)
-        ],
-        restaurants: { ...state.restaurants, ...newRestaurants },
+        restaurantIds: action.payload.items.map(restaurant => restaurant.uId),
+        restaurants: newRestaurants,
         isFetchingRestaurants: false
       };
     }

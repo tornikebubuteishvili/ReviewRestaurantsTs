@@ -33,8 +33,6 @@ export interface FetchListRequest {
 
 export interface FetchRestaurantRequest {
   readonly uId: string;
-  readonly name: string;
-  readonly average: number;
 }
 
 export interface FetchReviewRequest {

@@ -14,10 +14,6 @@ const RoutingMiddleware = () => (dispatch: Dispatch) => (action: AppAction) => {
       action.payload.history.push("/");
       return dispatch(action);
     }
-    // case getType(RestaurantActions.deleteRestaurant.success): {
-    //   // action.payload.history.push("/admin");
-    //   return;
-    // }
     default:
       return dispatch(action);
   }

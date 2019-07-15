@@ -25,6 +25,7 @@ import { Comparison, FilterLogic } from "../../api/types/Enum";
 import store from "../store/StoreConfig";
 import { getAccountState } from "../selectors/AccountSelectors";
 import { getRestaurant } from "../selectors/RestaurantDetailsSelectors";
+import { fetchRestaurant } from "../actions/RestaurantActions";
 
 export const addReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
   action$.pipe(
@@ -129,6 +130,18 @@ export const fetchReviewsAfterAddReviewAnswerEpic: Epic<
     )
   );
 
+export const fetchRestaurantAfterAddReviewAnswerEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf(addReviewAnswer.success)),
+    switchMap(action =>
+      of(fetchRestaurant.request({ uId: action.payload.restaurantUId }))
+    )
+  );
+
 export const updateReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
   action$.pipe(
     filter(isActionOf(updateReview.request)),
@@ -218,6 +231,7 @@ export default combineEpics(
   fetchReviewsAfterAddReviewEpic,
   addReviewAnswerEpic,
   fetchReviewsAfterAddReviewAnswerEpic,
+  fetchRestaurantAfterAddReviewAnswerEpic,
   updateReviewEpic,
   deleteReviewEpic,
   fetchReviewsAfterUpdateOrDeleteReviewEpic,
