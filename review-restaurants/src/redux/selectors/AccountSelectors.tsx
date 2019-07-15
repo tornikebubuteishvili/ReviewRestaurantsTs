@@ -14,3 +14,8 @@ export const getRequestState = createSelector(
     return { isLoggingIn, isLoggingOut, isRegistering };
   }
 );
+
+export const getError = createSelector(
+  (state: AppState) => state.account.error,
+  value => value
+);

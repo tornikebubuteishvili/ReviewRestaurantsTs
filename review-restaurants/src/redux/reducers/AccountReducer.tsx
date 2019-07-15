@@ -13,13 +13,16 @@ export default function AccountReducer(
     isLoggedIn: false,
     isLoggingIn: false,
     isLoggingOut: false,
-    isRegistering: false
+    isRegistering: false,
+    error: ""
   },
   action: AccountAction
 ): AccountState {
   switch (action.type) {
+    case getType(AccountActions.clearError):
+      return { ...state, error: "" };
     case getType(AccountActions.loginUser.request):
-      return { ...state, isLoggingIn: true };
+      return { ...state, error: "", isLoggingIn: true };
     case getType(AccountActions.loginUser.success):
       return {
         ...state,
@@ -31,7 +34,11 @@ export default function AccountReducer(
         isLoggingIn: false
       };
     case getType(AccountActions.loginUser.failure):
-      return { ...state, isLoggingIn: false };
+      return {
+        ...state,
+        error: action.payload,
+        isLoggingIn: false
+      };
     case getType(AccountActions.registerUser.request):
       return { ...state, isRegistering: true };
     case getType(AccountActions.registerUser.success):

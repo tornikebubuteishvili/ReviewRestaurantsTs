@@ -35,7 +35,7 @@ export const loginUserEpic: Epic<AppAction, AppAction, AppState> = action$ =>
         map(loginUser.success),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
-          return of(loginUser.failure(e));
+          return of(loginUser.failure(e.response.message));
         })
       )
     )
