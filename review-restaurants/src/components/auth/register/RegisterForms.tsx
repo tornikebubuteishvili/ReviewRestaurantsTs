@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import * as Yup from "yup";
-import { withFormik, FormikProps, FormikErrors, Form, Field } from "formik";
+import { withFormik, FormikProps, FormikErrors, Form } from "formik";
 import {
   InputGroup,
   Tooltip,
@@ -10,10 +9,10 @@ import {
 } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/select";
 import { Role } from "../../../api/types/Enum";
-import { useDispatch } from "react-redux";
-import { registerUser } from "../../../redux/actions/AccountActions";
 import { RegisterRequest } from "../../../api/types/Request";
 import { History } from "history";
+import { useSelector } from "react-redux";
+import { getRequestState } from "../../../redux/selectors/AccountSelectors";
 
 interface FormValues {
   role: Role;
@@ -37,6 +36,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     showRepeatPassword: false,
     selectedRole: Role.User
   });
+  const requestState = useSelector(getRequestState);
 
   return (
     <Form
@@ -49,7 +49,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
       <h2 style={{ marginBottom: 20, textAlign: "center" }}>
         Sign up as a(n):{"  "}
         <Select
-          items={[Role.User, Role.Owner, Role.Admin]}
+          items={[Role.User, Role.Owner]}
           itemRenderer={item => {
             return (
               <MenuItem
@@ -143,7 +143,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
           textAlign: "center"
         }}
       >
-        <Button type={"submit"} disabled={isSubmitting}>
+        <Button type={"submit"} disabled={requestState.isRegistering}>
           Sign up
         </Button>
       </div>

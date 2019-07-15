@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import * as Yup from "yup";
-import { withFormik, FormikProps, FormikErrors, Form, Field } from "formik";
+import { withFormik, FormikProps, FormikErrors, Form } from "formik";
 import { InputGroup, Tooltip, Button, Intent } from "@blueprintjs/core";
 import { LoginRequest } from "../../../api/types/Request";
 import { History } from "history";
+import { useSelector } from "react-redux";
+import { getRequestState } from "../../../redux/selectors/AccountSelectors";
 
 interface FormValues {
   username: string;
@@ -21,6 +22,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
   const [state, setState] = useState<State>({
     showPassword: false
   });
+  const requestState = useSelector(getRequestState);
 
   return (
     <Form
@@ -70,7 +72,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
           textAlign: "center"
         }}
       >
-        <Button type={"submit"} disabled={isSubmitting}>
+        <Button type={"submit"} disabled={requestState.isLoggingIn}>
           Log in
         </Button>
       </div>
