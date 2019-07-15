@@ -13,6 +13,8 @@ export type AccountState = {
   readonly role: Role;
   readonly isLoggedIn: boolean;
 
+  readonly error: string;
+
   readonly isLoggingIn: boolean;
   readonly isLoggingOut: boolean;
   readonly isRegistering: boolean;

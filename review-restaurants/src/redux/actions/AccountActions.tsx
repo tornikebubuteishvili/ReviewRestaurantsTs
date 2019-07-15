@@ -20,6 +20,11 @@ import {
   FetchUserRequest
 } from "../../api/types/Request";
 
+export const CLEAR_ERROR = "Account/CLEAR_ERROR";
+export const clearError = createAction(CLEAR_ERROR, resolve => {
+  return () => resolve();
+});
+
 export const LOGIN_USER_REQUEST = "Account/LOGIN_USER_REQUEST";
 export const LOGIN_USER_SUCCESS = "Account/LOGIN_USER_SUCCESS";
 export const LOGIN_USER_FAILURE = "Account/LOGIN_USER_FAILURE";
@@ -27,7 +32,7 @@ export const loginUser = createAsyncAction(
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILURE
-)<LoginRequest, LoginResponse, any>();
+)<LoginRequest, LoginResponse, string>();
 
 export const REGISTER_USER_REQUEST = "Account/REGISTER_USER_REQUEST";
 export const REGISTER_USER_SUCCESS = "Account/REGISTER_USER_SUCCESS";

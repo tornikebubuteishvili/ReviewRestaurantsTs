@@ -1,10 +1,21 @@
 import React, { useState } from "react";
 import { withFormik, FormikProps, FormikErrors, Form } from "formik";
-import { InputGroup, Tooltip, Button, Intent } from "@blueprintjs/core";
+import {
+  InputGroup,
+  Tooltip,
+  Button,
+  Intent,
+  Toaster
+} from "@blueprintjs/core";
 import { LoginRequest } from "../../../api/types/Request";
 import { History } from "history";
-import { useSelector } from "react-redux";
-import { getRequestState } from "../../../redux/selectors/AccountSelectors";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getRequestState,
+  getError
+} from "../../../redux/selectors/AccountSelectors";
+import { INTENT_DANGER } from "@blueprintjs/core/lib/esm/common/classes";
+import { clearError } from "../../../redux/actions/AccountActions";
 
 interface FormValues {
   username: string;
@@ -23,6 +34,8 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     showPassword: false
   });
   const requestState = useSelector(getRequestState);
+  const error = useSelector(getError);
+  const dispatch = useDispatch();
 
   return (
     <Form
@@ -32,6 +45,15 @@ const InnerForm = (props: FormikProps<FormValues>) => {
         marginTop: "auto"
       }}
     >
+      {error !== "" ? (
+        <div style={{ position: "absolute" }}>
+          <Toaster canEscapeKeyClear>
+            <Button intent={Intent.DANGER}>{error}</Button>
+          </Toaster>
+        </div>
+      ) : (
+        <div />
+      )}
       <h2 style={{ marginBottom: 20, textAlign: "center" }}>Log in</h2>
       <InputGroup
         style={{ marginBottom: 20 }}
