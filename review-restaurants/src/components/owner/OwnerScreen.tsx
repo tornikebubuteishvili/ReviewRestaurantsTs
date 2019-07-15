@@ -109,13 +109,13 @@ export default function OwnerScreen(props: RouteComponentProps) {
     setState({ ...state, isAddRestaurantDialogOpen: false });
   }
 
-  function onReplyClick(id: string, answer: string) {
+  function onReplyClick(id: string, restaurantId: string, answer: string) {
     dispatch(
       addReviewAnswer.request({
         reviewUId: id,
         answer,
         ownerUId: accountState.id,
-        restaurantUId: ""
+        restaurantUId: restaurantId
       })
     );
   }

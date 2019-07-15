@@ -8,7 +8,11 @@ import { Role } from "../../api/types/Enum";
 
 interface Props {
   readonly review: Review;
-  readonly onReplyClick: (id: string, answer: string) => void;
+  readonly onReplyClick: (
+    id: string,
+    restaurantId: string,
+    answer: string
+  ) => void;
   readonly onEditClick: (id: string) => void;
   readonly onDeleteClick: (id: string) => void;
 }
@@ -67,7 +71,11 @@ export default function ReviewView(props: Props) {
             <Button
               style={{ marginLeft: 20 }}
               onClick={() =>
-                props.onReplyClick(props.review.uId, state.inputValue)
+                props.onReplyClick(
+                  props.review.uId,
+                  props.review.restaurantUId,
+                  state.inputValue
+                )
               }
             >
               Reply
