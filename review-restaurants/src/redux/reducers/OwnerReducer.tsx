@@ -19,11 +19,18 @@ export default function OwnerReducer(
     isFetchingRestaurants: false,
     isFetchingPendingReviews: false,
     isAddingRestaurant: false,
-    isAddingAnswer: false
+    isAddingAnswer: false,
+    error: ""
   },
   action: RestaurantAction | ReviewAction
 ): OwnerState {
   switch (action.type) {
+    case getType(RestaurantActions.clearError):
+      return { ...state, error: "" };
+
+    case getType(RestaurantActions.setError):
+      return { ...state, error: action.payload };
+
     case getType(RestaurantActions.fetchRestaurants.request): {
       return {
         ...state,

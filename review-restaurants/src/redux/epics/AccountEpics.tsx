@@ -49,7 +49,7 @@ export const registerUserEpic: Epic<AppAction, AppAction, AppState> = action$ =>
         map(_ => registerUser.success(action.payload)),
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
-          return of(registerUser.failure(e));
+          return of(registerUser.failure(e.response.message));
         })
       )
     )
@@ -63,7 +63,7 @@ export const updateUserEpic: Epic<AppAction, AppAction, AppState> = action$ =>
         map(_ => updateUser.success(action.payload)), // might change to response
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
-          return of(updateUser.failure(e));
+          return of(updateUser.failure(e.response.message));
         })
       )
     )
@@ -105,7 +105,7 @@ export const deleteUserEpic: Epic<AppAction, AppAction, AppState> = action$ =>
         map(_ => deleteUser.success(action.payload)), // might change to response
         catchError((e: AjaxError) => {
           console.log(JSON.stringify(e.xhr ? e.xhr.response : e));
-          return of(deleteUser.failure(e));
+          return of(deleteUser.failure(e.response.message));
         })
       )
     )

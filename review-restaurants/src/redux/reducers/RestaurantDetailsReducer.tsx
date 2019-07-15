@@ -22,11 +22,14 @@ export default function RestaurantDetailsReducer(
     isFetchingRestaurant: false,
     isFetchingReviews: false,
     isAddingReview: false,
-    isAddingAnswer: false
+    isAddingAnswer: false,
+    error: ""
   },
   action: RestaurantAction | ReviewAction
 ): RestaurantDetailsState {
   switch (action.type) {
+    case getType(RestaurantActions.clearError):
+      return { ...state, error: "" };
     case getType(RestaurantActions.fetchRestaurant.request): {
       return {
         ...state,

@@ -1,4 +1,4 @@
-import { createAsyncAction } from "typesafe-actions";
+import { createAsyncAction, createAction } from "typesafe-actions";
 import {
   AddRestaurantRequest,
   UpdateRestaurantRequest,
@@ -40,6 +40,16 @@ export const deleteRestaurant = createAsyncAction(
   DELETE_RESTAURANT_SUCCESS,
   DELETE_RESTAURANT_FAILURE
 )<DeleteRestaurantRequest, DeleteRestaurantRequest, any>();
+
+export const CLEAR_ERROR = "Restaurant/CLEAR_ERROR";
+export const clearError = createAction(CLEAR_ERROR, resolve => {
+  return () => resolve();
+});
+
+export const SET_ERROR = "Restaurant/SET_ERROR";
+export const setError = createAction(SET_ERROR, resolve => {
+  return (text: string) => resolve(text);
+});
 
 export const FETCH_RESTAURANTS_REQUEST = "Restaurant/FETCH_RESTAURANTS_REQUEST";
 export const FETCH_RESTAURANTS_SUCCESS = "Restaurant/FETCH_RESTAURANTS_SUCCESS";

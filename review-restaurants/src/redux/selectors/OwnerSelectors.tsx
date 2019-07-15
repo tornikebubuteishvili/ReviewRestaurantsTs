@@ -60,3 +60,8 @@ export const getRequestState = createSelector(
     };
   }
 );
+
+export const getError = createSelector(
+  (state: AppState) => state.owner.error,
+  value => value
+);

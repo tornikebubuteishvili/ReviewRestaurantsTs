@@ -25,11 +25,14 @@ export default function AdminReducer(
     isUpdatingReview: false,
     isDeletingUser: false,
     isDeletingRestaurant: false,
-    isDeletingReview: false
+    isDeletingReview: false,
+    error: ""
   },
   action: AccountAction | RestaurantAction | ReviewAction
 ): AdminState {
   switch (action.type) {
+    case getType(RestaurantActions.clearError):
+      return { ...state, error: "" };
     case getType(AccountActions.fetchAccounts.request): {
       return { ...state, users: {}, userIds: [], isFetchingUsers: true };
     }
@@ -70,7 +73,7 @@ export default function AdminReducer(
       };
     }
     case getType(AccountActions.updateUser.failure): {
-      return { ...state, isUpdatingUser: false };
+      return { ...state, error: action.payload, isUpdatingUser: false };
     }
     case getType(AccountActions.deleteUser.request): {
       return { ...state, isDeletingUser: true };
@@ -88,7 +91,7 @@ export default function AdminReducer(
       };
     }
     case getType(AccountActions.deleteUser.failure): {
-      return { ...state, isDeletingUser: false };
+      return { ...state, error: action.payload, isDeletingUser: false };
     }
     case getType(RestaurantActions.fetchRestaurants.request): {
       return {

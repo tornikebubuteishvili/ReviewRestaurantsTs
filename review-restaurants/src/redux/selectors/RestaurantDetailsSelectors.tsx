@@ -34,3 +34,8 @@ export const getRequestState = createSelector(
     return { isFetchingRestaurant, isAddingReview, isAddingAnswer };
   }
 );
+
+export const getError = createSelector(
+  (state: AppState) => state.restaurantDetails.error,
+  value => value
+);

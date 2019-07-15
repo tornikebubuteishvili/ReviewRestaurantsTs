@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getRestaurant,
   getReviews,
-  getReviewIds
+  getReviewIds,
+  getError
 } from "../../redux/selectors/RestaurantDetailsSelectors";
 import Header from "../shared/Header";
-import { Button } from "@blueprintjs/core";
+import { Button, Toaster, Intent } from "@blueprintjs/core";
 import { getAccountState } from "../../redux/selectors/AccountSelectors";
 import { Role, Comparison, FilterLogic } from "../../api/types/Enum";
 import {
@@ -40,6 +41,7 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
   const reviews = useSelector(getReviews);
   const reviewIds = useSelector(getReviewIds);
   const dispatch = useDispatch();
+  const error = useSelector(getError);
 
   useEffect(() => {
     if (restaurant.uId !== "" && state.shouldFetchReviews) {
@@ -173,6 +175,16 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
           textAlign: "start"
         }}
       >
+        {error !== "" ? (
+          <div style={{ position: "absolute" }}>
+            <Toaster canEscapeKeyClear>
+              <Button intent={Intent.DANGER}>{error}</Button>
+            </Toaster>
+          </div>
+        ) : (
+          <div />
+        )}
+
         {restaurant.highestRatedReviewUId !== "" &&
         restaurant.highestRatedReviewUId !== null &&
         restaurant.highestRatedReviewUId !== undefined &&

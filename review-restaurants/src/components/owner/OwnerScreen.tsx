@@ -5,7 +5,8 @@ import {
   getRestaurants,
   getRestaurantIds,
   getPendingReviews,
-  getPendingReviewIds
+  getPendingReviewIds,
+  getError
 } from "../../redux/selectors/OwnerSelectors";
 import { RestaurantLite } from "../../api/types/Model";
 import RestaurantLiteView from "../shared/RestaurantLiteView";
@@ -13,12 +14,13 @@ import Header from "../shared/Header";
 import {
   fetchRestaurant,
   addRestaurant,
-  fetchRestaurants
+  fetchRestaurants,
+  setError
 } from "../../redux/actions/RestaurantActions";
 import AddRestaurantDialog from "../shared/AddRestaurantDialog";
 import { getAccountState } from "../../redux/selectors/AccountSelectors";
 import { Comparison, FilterLogic } from "../../api/types/Enum";
-import { Button } from "@blueprintjs/core";
+import { Button, Toaster, Intent } from "@blueprintjs/core";
 import SearchBar from "../shared/SearchBar";
 import ReviewView from "../restaurant/ReviewView";
 import {
@@ -44,6 +46,7 @@ export default function OwnerScreen(props: RouteComponentProps) {
   const pendingReviewIds = useSelector(getPendingReviewIds);
   const accountState = useSelector(getAccountState);
   const dispatch = useDispatch();
+  const error = useSelector(getError);
 
   useEffect(() => {
     if (accountState.id !== "") {
@@ -105,19 +108,23 @@ export default function OwnerScreen(props: RouteComponentProps) {
   }
 
   function onAddRestaurantClick(name: string) {
-    dispatch(addRestaurant.request({ name, ownerUId: accountState.id }));
+    name === ""
+      ? dispatch(setError("Cann't create reastaurant without name"))
+      : dispatch(addRestaurant.request({ name, ownerUId: accountState.id }));
     setState({ ...state, isAddRestaurantDialogOpen: false });
   }
 
   function onReplyClick(id: string, restaurantId: string, answer: string) {
-    dispatch(
-      addReviewAnswer.request({
-        reviewUId: id,
-        answer,
-        ownerUId: accountState.id,
-        restaurantUId: restaurantId
-      })
-    );
+    answer === ""
+      ? dispatch(setError("Answer can not be empty"))
+      : dispatch(
+          addReviewAnswer.request({
+            reviewUId: id,
+            answer,
+            ownerUId: accountState.id,
+            restaurantUId: restaurantId
+          })
+        );
   }
 
   function onFilterClick(lowerRating: number, higherRating: number) {
@@ -169,6 +176,15 @@ export default function OwnerScreen(props: RouteComponentProps) {
         }
       />
       <SearchBar onFilterClick={onFilterClick} />
+      {error !== "" ? (
+        <div style={{ position: "absolute" }}>
+          <Toaster canEscapeKeyClear>
+            <Button intent={Intent.DANGER}>{error}</Button>
+          </Toaster>
+        </div>
+      ) : (
+        <div />
+      )}
       <AddRestaurantDialog
         title={"Add a restaurant"}
         inputValue={""}
@@ -176,6 +192,7 @@ export default function OwnerScreen(props: RouteComponentProps) {
         onAcceptClick={onAddRestaurantClick}
         onClose={() => setState({ ...state, isAddRestaurantDialogOpen: false })}
       />
+
       <div style={{ display: "flex", flexDirection: "row" }}>
         <ul style={{ width: "100%", justifyContent: "center", padding: 0 }}>
           <h2 style={{ marginLeft: 55 }}>Restaurants</h2>

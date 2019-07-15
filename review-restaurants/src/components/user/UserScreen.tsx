@@ -14,6 +14,8 @@ import {
 import { getAccountState } from "../../redux/selectors/AccountSelectors";
 import { FilterLogic, Comparison } from "../../api/types/Enum";
 import SearchBar from "../shared/SearchBar";
+import { getError } from "../../redux/selectors/UserSelectors";
+import { Toaster, Intent, Button } from "@blueprintjs/core";
 
 interface State {
   isAddReviewDialogOpen: boolean;
@@ -31,6 +33,7 @@ export default function UserScreen(props: RouteComponentProps) {
   const restaurantIds = useSelector(getRestaurantIds);
   const accountState = useSelector(getAccountState);
   const dispatch = useDispatch();
+  const error = useSelector(getError);
 
   useEffect(() => {
     if (accountState.id !== "" && state.shouldFetchRestaurants) {
@@ -91,6 +94,16 @@ export default function UserScreen(props: RouteComponentProps) {
         leftElement={<div />}
       />
       <SearchBar onFilterClick={onFilterClick} />
+      {error !== "" ? (
+        <div style={{ position: "absolute" }}>
+          <Toaster canEscapeKeyClear>
+            <Button intent={Intent.DANGER}>{error}</Button>
+          </Toaster>
+        </div>
+      ) : (
+        <div />
+      )}
+
       <ul style={{ width: "100%", justifyContent: "center", padding: 0 }}>
         {restaurantIds.map(function(item) {
           return (

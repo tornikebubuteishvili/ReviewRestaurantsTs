@@ -5,14 +5,18 @@ import {
   Tooltip,
   Button,
   Intent,
-  MenuItem
+  MenuItem,
+  Toaster
 } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/select";
 import { Role } from "../../../api/types/Enum";
 import { RegisterRequest } from "../../../api/types/Request";
 import { History } from "history";
 import { useSelector } from "react-redux";
-import { getRequestState } from "../../../redux/selectors/AccountSelectors";
+import {
+  getRequestState,
+  getError
+} from "../../../redux/selectors/AccountSelectors";
 
 interface FormValues {
   role: Role;
@@ -37,6 +41,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     selectedRole: Role.User
   });
   const requestState = useSelector(getRequestState);
+  const error = useSelector(getError);
 
   return (
     <Form
@@ -46,6 +51,16 @@ const InnerForm = (props: FormikProps<FormValues>) => {
         marginTop: "auto"
       }}
     >
+      {error !== "" ? (
+        <div style={{ position: "absolute" }}>
+          <Toaster canEscapeKeyClear>
+            <Button intent={Intent.DANGER}>{error}</Button>
+          </Toaster>
+        </div>
+      ) : (
+        <div />
+      )}
+
       <h2 style={{ marginBottom: 20, textAlign: "center" }}>
         Sign up as a(n):{"  "}
         <Select

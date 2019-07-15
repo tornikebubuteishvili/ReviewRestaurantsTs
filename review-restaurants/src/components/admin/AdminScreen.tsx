@@ -19,14 +19,18 @@ import {
 import AddRestaurantDialog from "../shared/AddRestaurantDialog";
 import { getAccountState } from "../../redux/selectors/AccountSelectors";
 import { Comparison, FilterLogic, Role } from "../../api/types/Enum";
-import { Button } from "@blueprintjs/core";
+import { Button, Toaster, Intent } from "@blueprintjs/core";
 import SearchBar from "../shared/SearchBar";
 import ReviewView from "../restaurant/ReviewView";
 import {
   fetchReviews,
   addReviewAnswer
 } from "../../redux/actions/ReviewActions";
-import { getUsers, getUserIds } from "../../redux/selectors/AdminSelectors";
+import {
+  getUsers,
+  getUserIds,
+  getError
+} from "../../redux/selectors/AdminSelectors";
 import EditUserDialog from "./EditUserDialog";
 import {
   fetchAccounts,
@@ -58,6 +62,7 @@ export default function AdminScreen(props: RouteComponentProps) {
   const users = useSelector(getUsers);
   const userIds = useSelector(getUserIds);
   const accountState = useSelector(getAccountState);
+  const error = useSelector(getError);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -173,6 +178,15 @@ export default function AdminScreen(props: RouteComponentProps) {
         leftElement={<div />}
       />
       <SearchBar onFilterClick={onFilterClick} />
+      {error !== "" ? (
+        <div style={{ position: "absolute" }}>
+          <Toaster canEscapeKeyClear>
+            <Button intent={Intent.DANGER}>{error}</Button>
+          </Toaster>
+        </div>
+      ) : (
+        <div />
+      )}
       <AddRestaurantDialog
         title={"Edit restaurant"}
         inputValue={

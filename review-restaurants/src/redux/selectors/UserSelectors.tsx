@@ -22,3 +22,8 @@ export const getRequestState = createSelector(
     return { isFetchingRestaurants };
   }
 );
+
+export const getError = createSelector(
+  (state: AppState) => state.user.error,
+  value => value
+);

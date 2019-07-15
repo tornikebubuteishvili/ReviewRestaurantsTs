@@ -14,8 +14,6 @@ import {
   getRequestState,
   getError
 } from "../../../redux/selectors/AccountSelectors";
-import { INTENT_DANGER } from "@blueprintjs/core/lib/esm/common/classes";
-import { clearError } from "../../../redux/actions/AccountActions";
 
 interface FormValues {
   username: string;

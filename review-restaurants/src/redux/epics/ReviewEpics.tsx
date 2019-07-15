@@ -23,7 +23,6 @@ import {
 } from "../../api/ReviewApi";
 import { Comparison, FilterLogic } from "../../api/types/Enum";
 import store from "../store/StoreConfig";
-import { getAccountState } from "../selectors/AccountSelectors";
 import { getRestaurant } from "../selectors/RestaurantDetailsSelectors";
 import { fetchRestaurant } from "../actions/RestaurantActions";
 

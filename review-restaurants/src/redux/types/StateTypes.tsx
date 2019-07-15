@@ -26,6 +26,8 @@ export type UserState = {
   readonly hasMoreRestaurants: boolean;
 
   readonly isFetchingRestaurants: boolean;
+
+  readonly error: string;
 };
 
 export type OwnerState = {
@@ -42,6 +44,8 @@ export type OwnerState = {
   readonly isFetchingPendingReviews: boolean;
   readonly isAddingRestaurant: boolean;
   readonly isAddingAnswer: boolean;
+
+  readonly error: string;
 };
 
 export type AdminState = {
@@ -60,6 +64,8 @@ export type AdminState = {
   readonly isDeletingUser: boolean;
   readonly isDeletingRestaurant: boolean;
   readonly isDeletingReview: boolean;
+
+  readonly error: string;
 };
 
 export type RestaurantDetailsState = {
@@ -73,6 +79,8 @@ export type RestaurantDetailsState = {
   readonly isFetchingReviews: boolean;
   readonly isAddingReview: boolean;
   readonly isAddingAnswer: boolean;
+
+  readonly error: string;
 };
 
 export type AppState = {

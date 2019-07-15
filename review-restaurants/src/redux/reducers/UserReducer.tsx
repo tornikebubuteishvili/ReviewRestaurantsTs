@@ -10,11 +10,15 @@ export default function UserReducer(
     restaurantIds: [],
     hasMoreRestaurants: false,
 
-    isFetchingRestaurants: false
+    isFetchingRestaurants: false,
+
+    error: ""
   },
   action: RestaurantAction
 ): UserState {
   switch (action.type) {
+    case getType(RestaurantActions.clearError):
+      return { ...state, error: "" };
     case getType(RestaurantActions.fetchRestaurants.request): {
       return {
         ...state,

@@ -44,7 +44,7 @@ export default function AccountReducer(
     case getType(AccountActions.registerUser.success):
       return { ...state, isRegistering: false };
     case getType(AccountActions.registerUser.failure):
-      return { ...state, isRegistering: false };
+      return { ...state, error: action.payload, isRegistering: false };
     case getType(AccountActions.logoutUser.request):
       return { ...state, isLoggingOut: true };
     case getType(AccountActions.logoutUser.success):

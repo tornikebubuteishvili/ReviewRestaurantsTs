@@ -62,3 +62,8 @@ export const getRequestState = createSelector(
     };
   }
 );
+
+export const getError = createSelector(
+  (state: AppState) => state.admin.error,
+  value => value
+);
