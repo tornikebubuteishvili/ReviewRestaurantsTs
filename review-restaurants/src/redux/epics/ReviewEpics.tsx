@@ -259,6 +259,7 @@ export default combineEpics(
   updateReviewEpic,
   deleteReviewEpic,
   fetchReviewsAfterUpdateOrDeleteReviewEpic,
+  fetchRestaurantAfterUpdateOrDeleteReviewEpic,
   fetchReviewsEpic,
   fetchReviewEpic
 );
