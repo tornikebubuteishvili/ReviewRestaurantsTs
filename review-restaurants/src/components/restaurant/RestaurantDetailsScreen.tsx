@@ -217,6 +217,7 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
               onEditClick={onEditReviewClick}
               onDeleteClick={onDeleteReviewClick}
             />
+            {reviewIds.length > 2 ? <p>Latest reviews:</p> : <p />}
           </div>
         ) : (
           <div>No reviews yet.</div>
