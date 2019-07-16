@@ -181,6 +181,18 @@ export const deleteReviewEpic: Epic<AppAction, AppAction, AppState> = action$ =>
     )
   );
 
+export const fetchRestaurantAfterUpdateOrDeleteReviewEpic: Epic<
+  AppAction,
+  AppAction,
+  AppState
+> = action$ =>
+  action$.pipe(
+    filter(isActionOf([updateReview.success, deleteReview.success])),
+    switchMap(action =>
+      of(fetchRestaurant.request({ uId: getRestaurant(store.getState()).uId }))
+    )
+  );
+
 export const fetchReviewsAfterUpdateOrDeleteReviewEpic: Epic<
   AppAction,
   AppAction,
