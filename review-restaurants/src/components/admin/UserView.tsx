@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, Elevation, Button } from "@blueprintjs/core";
 import { User } from "../../api/types/Model";
-import { Role } from "../../api/types/Enum";
 
 interface Props {
   readonly user: User;

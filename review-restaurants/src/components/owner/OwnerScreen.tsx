@@ -1,5 +1,5 @@
-import React, { useState, CSSProperties, useEffect } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, RouteComponentProps, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getRestaurants,
@@ -8,7 +8,6 @@ import {
   getPendingReviewIds,
   getError
 } from "../../redux/selectors/OwnerSelectors";
-import { RestaurantLite } from "../../api/types/Model";
 import RestaurantLiteView from "../shared/RestaurantLiteView";
 import Header from "../shared/Header";
 import {
@@ -18,7 +17,10 @@ import {
   setError
 } from "../../redux/actions/RestaurantActions";
 import AddRestaurantDialog from "../shared/AddRestaurantDialog";
-import { getAccountState } from "../../redux/selectors/AccountSelectors";
+import {
+  getAccountState,
+  getRequestState
+} from "../../redux/selectors/AccountSelectors";
 import { Comparison, FilterLogic } from "../../api/types/Enum";
 import { Button, Toaster, Intent } from "@blueprintjs/core";
 import SearchBar from "../shared/SearchBar";
@@ -27,6 +29,7 @@ import {
   fetchReviews,
   addReviewAnswer
 } from "../../redux/actions/ReviewActions";
+import { GetIsLoggedIn } from "../../functions/StoreFunctions";
 
 interface State {
   isAddRestaurantDialogOpen: boolean;
@@ -35,6 +38,8 @@ interface State {
 }
 
 export default function OwnerScreen(props: RouteComponentProps) {
+  const isLoggedIn = useSelector(GetIsLoggedIn);
+  const accountRequestState = useSelector(getRequestState);
   const [state, setState] = useState<State>({
     isAddRestaurantDialogOpen: false,
     shouldFetchRestaurants: true,
@@ -157,6 +162,8 @@ export default function OwnerScreen(props: RouteComponentProps) {
     );
   }
 
+  if (!accountRequestState.isLoggingIn && !isLoggedIn)
+    return <Redirect to="/" />;
   return (
     <div style={{ flex: 1 }}>
       <Header

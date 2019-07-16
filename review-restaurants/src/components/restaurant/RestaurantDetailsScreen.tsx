@@ -1,5 +1,5 @@
 import React, { useState, CSSProperties, useEffect } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link, RouteComponentProps, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getRestaurant,
@@ -9,7 +9,10 @@ import {
 } from "../../redux/selectors/RestaurantDetailsSelectors";
 import Header from "../shared/Header";
 import { Button, Toaster, Intent } from "@blueprintjs/core";
-import { getAccountState } from "../../redux/selectors/AccountSelectors";
+import {
+  getAccountState,
+  getRequestState
+} from "../../redux/selectors/AccountSelectors";
 import { Role, Comparison, FilterLogic } from "../../api/types/Enum";
 import {
   fetchReviews,
@@ -21,6 +24,7 @@ import {
 import ReviewView from "./ReviewView";
 import AddReviewDialog from "./AddReviewDialog";
 import EditReviewDialog from "./EditReviewDialog";
+import { GetIsLoggedIn } from "../../functions/StoreFunctions";
 
 interface State {
   isAddReviewDialogOpen: boolean;
@@ -30,6 +34,8 @@ interface State {
 }
 
 export default function RestaurantDetailsScreen(props: RouteComponentProps) {
+  const isLoggedIn = useSelector(GetIsLoggedIn);
+  const accountRequestState = useSelector(getRequestState);
   const [state, setState] = useState<State>({
     isAddReviewDialogOpen: false,
     isEditReviewDialogOpen: false,
@@ -114,6 +120,8 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
     dispatch(deleteReview.request({ uId: id }));
   }
 
+  if (!accountRequestState.isLoggingIn && !isLoggedIn)
+    return <Redirect to="/" />;
   return (
     <div style={{ flex: 1, textAlign: "center" }}>
       <Header

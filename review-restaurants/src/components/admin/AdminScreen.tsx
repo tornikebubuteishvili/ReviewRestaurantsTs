@@ -1,31 +1,27 @@
-import React, { useState, CSSProperties, useEffect } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getRestaurants,
-  getRestaurantIds,
-  getPendingReviews,
-  getPendingReviewIds
+  getRestaurantIds
 } from "../../redux/selectors/OwnerSelectors";
 import RestaurantLiteView from "../shared/RestaurantLiteView";
 import Header from "../shared/Header";
 import {
   fetchRestaurant,
-  addRestaurant,
   fetchRestaurants,
   updateRestaurant,
-  deleteRestaurant
+  deleteRestaurant,
+  setError
 } from "../../redux/actions/RestaurantActions";
 import AddRestaurantDialog from "../shared/AddRestaurantDialog";
-import { getAccountState } from "../../redux/selectors/AccountSelectors";
+import {
+  getAccountState,
+  getRequestState
+} from "../../redux/selectors/AccountSelectors";
 import { Comparison, FilterLogic, Role } from "../../api/types/Enum";
 import { Button, Toaster, Intent } from "@blueprintjs/core";
 import SearchBar from "../shared/SearchBar";
-import ReviewView from "../restaurant/ReviewView";
-import {
-  fetchReviews,
-  addReviewAnswer
-} from "../../redux/actions/ReviewActions";
 import {
   getUsers,
   getUserIds,
@@ -38,6 +34,7 @@ import {
   deleteUser
 } from "../../redux/actions/AccountActions";
 import UserView from "./UserView";
+import { GetIsLoggedIn } from "../../functions/StoreFunctions";
 
 interface State {
   isEditUserDialogOpen: boolean;
@@ -49,6 +46,8 @@ interface State {
 }
 
 export default function AdminScreen(props: RouteComponentProps) {
+  const isLoggedIn = useSelector(GetIsLoggedIn);
+  const accountRequestState = useSelector(getRequestState);
   const [state, setState] = useState<State>({
     isEditUserDialogOpen: false,
     editingUserId: "",
@@ -137,9 +136,13 @@ export default function AdminScreen(props: RouteComponentProps) {
   }
 
   function onUserEditAcceptClick(username: string, password: string) {
-    dispatch(
-      updateUser.request({ uId: state.editingUserId, username, password })
-    );
+    username === ""
+      ? dispatch(setError("Username can't be empty."))
+      : password === ""
+      ? dispatch(setError("Password can't be empty."))
+      : dispatch(
+          updateUser.request({ uId: state.editingUserId, username, password })
+        );
     setState({ ...state, isEditUserDialogOpen: false, editingUserId: "" });
   }
 
@@ -156,9 +159,11 @@ export default function AdminScreen(props: RouteComponentProps) {
   }
 
   function onRestaurantEditAcceptClick(name: string) {
-    dispatch(
-      updateRestaurant.request({ uId: state.editingRestaurantId, name })
-    );
+    name === ""
+      ? dispatch(setError("Restaurant name can't be empty."))
+      : dispatch(
+          updateRestaurant.request({ uId: state.editingRestaurantId, name })
+        );
     setState({
       ...state,
       isAddRestaurantDialogOpen: false,
@@ -170,6 +175,8 @@ export default function AdminScreen(props: RouteComponentProps) {
     dispatch(deleteRestaurant.request({ uId: id }));
   }
 
+  if (!accountRequestState.isLoggingIn && !isLoggedIn)
+    return <Redirect to="/" />;
   return (
     <div style={{ flex: 1 }}>
       <Header

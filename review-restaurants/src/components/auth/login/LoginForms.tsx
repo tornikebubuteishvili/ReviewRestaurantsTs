@@ -63,6 +63,18 @@ const InnerForm = (props: FormikProps<FormValues>) => {
         }}
         value={props.values.username}
       />
+      {touched.username && errors.username && (
+        <div
+          style={{
+            marginLeft: 10,
+            marginBottom: 10,
+            marginTop: -20,
+            color: "red"
+          }}
+        >
+          {errors.username}
+        </div>
+      )}
       <InputGroup
         style={{ marginBottom: 20 }}
         placeholder="Password"
@@ -86,7 +98,18 @@ const InnerForm = (props: FormikProps<FormValues>) => {
         }}
         value={props.values.password}
       />
-      {touched.password && errors.password && <div>{errors.password}</div>}
+      {touched.password && errors.password && (
+        <div
+          style={{
+            marginLeft: 10,
+            marginBottom: 10,
+            marginTop: -20,
+            color: "red"
+          }}
+        >
+          {errors.password}
+        </div>
+      )}
       <div
         style={{
           textAlign: "center"

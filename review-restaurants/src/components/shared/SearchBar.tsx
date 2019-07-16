@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, NumericInput } from "@blueprintjs/core";
+import { clamp } from "@blueprintjs/core/lib/esm/common/utils";
 
 interface Props {
   readonly onFilterClick: (lowerRating: number, higherRating: number) => void;
@@ -33,7 +34,7 @@ export default function SearchBar(props: Props) {
         max={5}
         min={0}
         onValueChange={(value: number, _: string) =>
-          setState({ ...state, lowerRating: value })
+          setState({ ...state, lowerRating: clamp(value, 0, 5) })
         }
       />
       to:
@@ -44,7 +45,7 @@ export default function SearchBar(props: Props) {
         max={5}
         min={0}
         onValueChange={(value: number, _: string) =>
-          setState({ ...state, higherRating: value })
+          setState({ ...state, higherRating: clamp(value, 0, 5) })
         }
       />
       <Button

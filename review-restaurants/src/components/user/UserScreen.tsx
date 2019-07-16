@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getRestaurants,
@@ -11,11 +11,15 @@ import {
   fetchRestaurant,
   fetchRestaurants
 } from "../../redux/actions/RestaurantActions";
-import { getAccountState } from "../../redux/selectors/AccountSelectors";
+import {
+  getAccountState,
+  getRequestState
+} from "../../redux/selectors/AccountSelectors";
 import { FilterLogic, Comparison } from "../../api/types/Enum";
 import SearchBar from "../shared/SearchBar";
 import { getError } from "../../redux/selectors/UserSelectors";
 import { Toaster, Intent, Button } from "@blueprintjs/core";
+import { GetIsLoggedIn } from "../../functions/StoreFunctions";
 
 interface State {
   isAddReviewDialogOpen: boolean;
@@ -24,6 +28,8 @@ interface State {
 }
 
 export default function UserScreen(props: RouteComponentProps) {
+  const isLoggedIn = useSelector(GetIsLoggedIn);
+  const accountRequestState = useSelector(getRequestState);
   const [state, setState] = useState<State>({
     isAddReviewDialogOpen: false,
     shouldFetchRestaurants: true,
@@ -86,6 +92,8 @@ export default function UserScreen(props: RouteComponentProps) {
     props.history.push("/RestaurantDetails");
   }
 
+  if (!accountRequestState.isLoggingIn && !isLoggedIn)
+    return <Redirect to="/" />;
   return (
     <div style={{ flex: 1 }}>
       <Header

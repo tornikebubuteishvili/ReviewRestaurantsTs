@@ -33,6 +33,8 @@ export default function AdminReducer(
   switch (action.type) {
     case getType(RestaurantActions.clearError):
       return { ...state, error: "" };
+    case getType(RestaurantActions.setError):
+      return { ...state, error: action.payload };
     case getType(AccountActions.fetchAccounts.request): {
       return { ...state, users: {}, userIds: [], isFetchingUsers: true };
     }

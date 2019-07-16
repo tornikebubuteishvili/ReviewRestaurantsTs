@@ -19,6 +19,8 @@ export default function UserReducer(
   switch (action.type) {
     case getType(RestaurantActions.clearError):
       return { ...state, error: "" };
+    case getType(RestaurantActions.setError):
+      return { ...state, error: action.payload };
     case getType(RestaurantActions.fetchRestaurants.request): {
       return {
         ...state,

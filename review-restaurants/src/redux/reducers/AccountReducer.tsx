@@ -46,19 +46,22 @@ export default function AccountReducer(
     case getType(AccountActions.registerUser.failure):
       return { ...state, error: action.payload, isRegistering: false };
     case getType(AccountActions.logoutUser.request):
-      return { ...state, isLoggingOut: true };
-    case getType(AccountActions.logoutUser.success):
       return {
         ...state,
         id: "",
         username: "",
-        token: "",
         role: Role.User,
         isLoggedIn: false,
+        isLoggingOut: true
+      };
+    case getType(AccountActions.logoutUser.success):
+      return {
+        ...state,
+        token: "",
         isLoggingOut: false
       };
     case getType(AccountActions.logoutUser.failure):
-      return { ...state, isLoggingOut: false };
+      return { ...state, token: "", isLoggingOut: false };
     case getType(AccountActions.refreshToken.success):
       return {
         ...state,
