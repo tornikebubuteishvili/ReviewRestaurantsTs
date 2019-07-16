@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withFormik, FormikProps, FormikErrors, Form } from "formik";
 import {
   InputGroup,
@@ -12,11 +12,12 @@ import { Select } from "@blueprintjs/select";
 import { Role } from "../../../api/types/Enum";
 import { RegisterRequest } from "../../../api/types/Request";
 import { History } from "history";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getRequestState,
   getError
 } from "../../../redux/selectors/AccountSelectors";
+import { clearError } from "../../../redux/actions/AccountActions";
 
 interface FormValues {
   role: Role;
@@ -42,6 +43,11 @@ const InnerForm = (props: FormikProps<FormValues>) => {
   });
   const requestState = useSelector(getRequestState);
   const error = useSelector(getError);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setTimeout(() => dispatch(clearError()), 3000);
+  }, [error]);
 
   return (
     <Form

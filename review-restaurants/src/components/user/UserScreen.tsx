@@ -9,7 +9,8 @@ import RestaurantLiteView from "../shared/RestaurantLiteView";
 import Header from "../shared/Header";
 import {
   fetchRestaurant,
-  fetchRestaurants
+  fetchRestaurants,
+  clearError
 } from "../../redux/actions/RestaurantActions";
 import {
   getAccountState,
@@ -57,6 +58,10 @@ export default function UserScreen(props: RouteComponentProps) {
       );
     }
   });
+
+  useEffect(() => {
+    setTimeout(() => dispatch(clearError()), 3000);
+  }, [error]);
 
   function onFilterClick(lowerRating: number, higherRating: number) {
     dispatch(

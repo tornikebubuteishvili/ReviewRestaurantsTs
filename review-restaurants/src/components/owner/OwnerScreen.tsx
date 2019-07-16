@@ -14,7 +14,8 @@ import {
   fetchRestaurant,
   addRestaurant,
   fetchRestaurants,
-  setError
+  setError,
+  clearError
 } from "../../redux/actions/RestaurantActions";
 import AddRestaurantDialog from "../shared/AddRestaurantDialog";
 import {
@@ -102,6 +103,10 @@ export default function OwnerScreen(props: RouteComponentProps) {
       }
     }
   });
+
+  useEffect(() => {
+    setTimeout(() => dispatch(clearError()), 3000);
+  }, [error]);
 
   function onRestaurantClick(id: string) {
     dispatch(

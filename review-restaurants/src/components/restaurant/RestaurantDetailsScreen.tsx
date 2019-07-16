@@ -25,6 +25,7 @@ import ReviewView from "./ReviewView";
 import AddReviewDialog from "./AddReviewDialog";
 import EditReviewDialog from "./EditReviewDialog";
 import { GetIsLoggedIn } from "../../functions/StoreFunctions";
+import { clearError } from "../../redux/actions/RestaurantActions";
 
 interface State {
   isAddReviewDialogOpen: boolean;
@@ -71,6 +72,10 @@ export default function RestaurantDetailsScreen(props: RouteComponentProps) {
       );
     }
   });
+
+  useEffect(() => {
+    setTimeout(() => dispatch(clearError()), 3000);
+  }, [error]);
 
   function onReplyClick(id: string, _: string, answer: string) {
     dispatch(

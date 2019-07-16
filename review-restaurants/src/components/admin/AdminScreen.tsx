@@ -12,7 +12,8 @@ import {
   fetchRestaurants,
   updateRestaurant,
   deleteRestaurant,
-  setError
+  setError,
+  clearError
 } from "../../redux/actions/RestaurantActions";
 import AddRestaurantDialog from "../shared/AddRestaurantDialog";
 import {
@@ -96,6 +97,10 @@ export default function AdminScreen(props: RouteComponentProps) {
       }
     }
   });
+
+  useEffect(() => {
+    setTimeout(() => dispatch(clearError()), 3000);
+  }, [error]);
 
   function onRestaurantClick(id: string) {
     dispatch(
